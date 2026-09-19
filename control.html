@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Control V4.1</title>
+<title>Steal An Egg Control V4.2</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -43,13 +43,14 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:poin
   border-color:#fff;
 }
 .qtycurrent{font-weight:900;color:#55ff3b;margin-left:5px}
+.syncstatus{font-weight:900;color:#8fb7ff;margin-left:8px}
 
 .notice{margin-top:16px;background:#10151c;border:1px solid #2b3440;border-radius:12px;padding:12px;color:#b8c3cf;font-size:13px;line-height:1.55}
 @media(max-width:800px){.grid{grid-template-columns:1fr}.muts{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head><body><main>
-<h1>🥚 Steal An Egg Control V4.1 — FIXED</h1>
-<div class="sub">
+<h1>🥚 Steal An Egg Control V4.2 — FIXED</h1>
+<div class="sub"><span class="syncstatus" id="syncStatus">● Sẵn sàng</span> 
 Weight nhập <b>1–1000</b>. <b>Weight 1 = đúng tiền gốc</b>; tăng Weight thì tự nhân theo đường cong size.
 Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Số lượng x1–x10 chỉ là nhãn số pet: x1 không hiện nhãn; chọn x2 thì hiện x2, bấm x5 sẽ tự thay x2 thành x5. Luminous Eggs không có nhãn số lượng.
 </div>
@@ -350,6 +351,7 @@ function render(){
  }
 }
 let publishTimer;
+const weightTimers={};
 function saveAndPublish(){
  state.updatedAt=Date.now();
  const payload=JSON.stringify(state);
@@ -358,27 +360,50 @@ function saveAndPublish(){
  try{if(bc)bc.postMessage(state)}catch(_e){}
  render();
 
+ const status=document.getElementById("syncStatus");
+ if(status){status.textContent="● Đang gửi...";status.style.color="#ffd75a"}
+
  const send=async()=>{
    try{
-     await fetch(`https://ntfy.sh/${CFG.topic}`,{
+     const r=await fetch(`https://ntfy.sh/${CFG.topic}?_=${Date.now()}`,{
        method:"POST",
-       headers:{"Content-Type":"text/plain;charset=UTF-8"},
+       headers:{
+         "Content-Type":"text/plain;charset=UTF-8",
+         "Cache-Control":"no-cache"
+       },
        body:payload,
        cache:"no-store"
      });
-   }catch(_e){}
+     if(status&&r.ok){status.textContent="● Đã gửi";status.style.color="#55ff78"}
+     return r.ok;
+   }catch(_e){
+     if(status){status.textContent="● Mất kết nối - đang thử lại";status.style.color="#ff6b6b"}
+     return false;
+   }
  };
+
  send();
  clearTimeout(publishTimer);
- publishTimer=setTimeout(send,450);
+ publishTimer=setTimeout(send,250);
+ setTimeout(send,900);
 }
 document.querySelectorAll(".pet").forEach(sec=>{
  const id=sec.dataset.id,c=CFG.cards.find(x=>x.id===id);
  sec.querySelector(".toggle").onclick=()=>{state.cards[id].enabled=!state.cards[id].enabled;saveAndPublish()};
  if(c?.dynamic){
    const wi=sec.querySelector('input[type=number]');
-   wi.addEventListener("input",()=>{state.cards[id].weight=clampWeight(wi.value);render();saveAndPublish()});
-   wi.addEventListener("change",()=>{wi.value=clampWeight(wi.value);state.cards[id].weight=clampWeight(wi.value);saveAndPublish()});
+   wi.addEventListener("input",()=>{
+     state.cards[id].weight=clampWeight(wi.value);
+     render();
+     clearTimeout(weightTimers[id]);
+     weightTimers[id]=setTimeout(saveAndPublish,120);
+   });
+   wi.addEventListener("change",()=>{
+     wi.value=clampWeight(wi.value);
+     state.cards[id].weight=clampWeight(wi.value);
+     clearTimeout(weightTimers[id]);
+     saveAndPublish();
+   });
    sec.querySelectorAll('.muts input').forEach(cb=>cb.addEventListener("change",()=>{
      state.cards[id].mutations=[...sec.querySelectorAll('.muts input:checked')].map(x=>x.value);saveAndPublish();
    }));
