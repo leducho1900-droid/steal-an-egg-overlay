@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Steal An Egg Overlay V1</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden}
+body{font-family:Arial,Helvetica,sans-serif}
+#stage{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:2.2vh 2vw}
+#grid{
+  width:min(96vw,1500px);
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:clamp(8px,1.05vw,18px);
+  perspective:1200px;
+}
+.card-wrap{position:relative;aspect-ratio:0.72;display:block;filter:drop-shadow(0 10px 12px rgba(0,0,0,.22));}
+.card-wrap.hidden{display:none}
+.card-3d{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  will-change:transform;
+  animation:cardFloat3D 3.6s cubic-bezier(.42,0,.58,1) infinite;
+  animation-delay:var(--delay);
+}
+.card-svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+/* Chỉ che đúng dòng tiền cũ bằng một lớp web; file ảnh gốc không bị chỉnh sửa */
+.price-mask{
+  position:absolute;left:9%;right:9%;top:27.4%;height:13.8%;
+  border-radius:7px;
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.18) 0 5px,rgba(255,255,255,0) 5px 17px),
+    linear-gradient(180deg,#bff4ff 0%,#a9e9fb 100%);
+  z-index:2;
+}
+.dynamic-price{
+  position:absolute;left:5%;right:5%;top:27.0%;height:15%;
+  display:flex;align-items:center;justify-content:center;z-index:3;
+  color:#39ff16;
+  font-family:Impact,"Arial Black",sans-serif;
+  font-weight:900;
+  font-size:clamp(18px,2.2vw,43px);
+  letter-spacing:-.02em;
+  white-space:nowrap;
+  -webkit-text-stroke:clamp(1.5px,.19vw,3.5px) #050505;
+  text-shadow:0 2px 0 #000,0 0 2px #000;
+}
+@keyframes cardFloat3D{
+  0%,100%{transform:perspective(850px) rotateX(0deg) rotateY(0deg) scale(1)}
+  22%{transform:perspective(850px) rotateX(1.2deg) rotateY(-1.8deg) scale(1.045)}
+  48%{transform:perspective(850px) rotateX(-.8deg) rotateY(1.3deg) scale(1.015)}
+  72%{transform:perspective(850px) rotateX(.5deg) rotateY(-.6deg) scale(.992)}
+}
+@media (max-aspect-ratio:1/1){
+  #grid{grid-template-columns:repeat(2,minmax(0,1fr));width:min(95vw,800px);gap:10px}
+  #stage{align-items:flex-start;overflow:auto}
+  .dynamic-price{font-size:clamp(20px,6.6vw,42px)}
+}
+</style>
+</head>
+<body>
+<div id="stage"><div id="grid">
+
+      <div class="card-wrap" data-card="kitsune" style="--delay:-0.00s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="22 93 285 405" preserveAspectRatio="xMidYMid meet" aria-label="Kitsune">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="luminous_cthulhu" style="--delay:-0.22s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="320 92 292 407" preserveAspectRatio="xMidYMid meet" aria-label="Luminous Cthulhu">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="archangel" style="--delay:-0.44s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="625 92 286 407" preserveAspectRatio="xMidYMid meet" aria-label="ArchAngel">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="aetheron" style="--delay:-0.66s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="922 92 293 407" preserveAspectRatio="xMidYMid meet" aria-label="Aetheron">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="world_burner_cthulhu" style="--delay:-0.88s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="1224 92 294 407" preserveAspectRatio="xMidYMid meet" aria-label="World Burner Cthulhu">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="shattered_colossus" style="--delay:-1.10s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="21 515 286 407" preserveAspectRatio="xMidYMid meet" aria-label="Shattered Colossus">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="nightflame" style="--delay:-1.32s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="320 516 293 407" preserveAspectRatio="xMidYMid meet" aria-label="Nightflame">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="luminous_eggs" style="--delay:-1.54s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="625 516 285 406" preserveAspectRatio="xMidYMid meet" aria-label="Luminous Eggs">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          
+        </div>
+      </div>
+      <div class="card-wrap" data-card="cthulhu" style="--delay:-1.76s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="923 516 292 406" preserveAspectRatio="xMidYMid meet" aria-label="Cthulhu">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+      <div class="card-wrap" data-card="mecha_dreadscale" style="--delay:-1.98s">
+        <div class="card-3d">
+          <svg class="card-svg" viewBox="1230 516 285 406" preserveAspectRatio="xMidYMid meet" aria-label="Mecha Dreadscale">
+            <image href="cards_original.png" x="0" y="0" width="1535" height="1024"></image>
+          </svg>
+          <div class="price-mask"></div><div class="dynamic-price" data-price></div>
+        </div>
+      </div>
+</div></div>
+<script src="config.js"></script>
+<script>
+const CFG=window.SAE_CONFIG;
+const defaultState={cards:{}};
+for(const c of CFG.cards){
+  defaultState.cards[c.id]={enabled:true,weight:1,mutations:[]};
+}
+let state=structuredClone(defaultState);
+
+function sizeFactor(weight){
+  const scale=Math.cbrt(Math.max(1,Math.min(1000,Number(weight)||1))); // normalized reference weight = 1
+  return scale<=5 ? Math.pow(scale,1.85) : 19.637875755794113*Math.pow(scale/5,1.2);
+}
+function mutationFactor(list){
+  let f=1;
+  for(const key of [...new Set(list||[])]){
+    const m=CFG.mutations[key]?.multiplier||1;
+    f += Math.max(0,m-1);
+  }
+  return f;
+}
+function fmt(n){
+  if(!Number.isFinite(n)) return "$0/s";
+  if(n>=1e15) return "$"+trim(n/1e15)+"Q/s";
+  if(n>=1e12) return "$"+trim(n/1e12)+"T/s";
+  if(n>=1e9) return "$"+trim(n/1e9)+"B/s";
+  if(n>=1e6) return "$"+trim(n/1e6)+"M/s";
+  if(n>=1e3) return "$"+trim(n/1e3)+"K/s";
+  return "$"+Math.round(n)+"/s";
+}
+function trim(v){
+  return (Math.round(v*10)/10).toLocaleString("en-US",{maximumFractionDigits:1});
+}
+function render(){
+  for(const c of CFG.cards){
+    const el=document.querySelector(`[data-card="${c.id}"]`);
+    const s=state.cards[c.id]||{enabled:true,weight:1,mutations:[]};
+    el.classList.toggle("hidden",!s.enabled);
+    if(c.dynamic){
+      const val=c.base*sizeFactor(s.weight)*mutationFactor(s.mutations);
+      el.querySelector("[data-price]").textContent=fmt(Math.round(val));
+    }
+  }
+}
+function applyIncoming(obj){
+  if(!obj || !obj.cards) return;
+  for(const c of CFG.cards){
+    if(obj.cards[c.id]) state.cards[c.id]={...state.cards[c.id],...obj.cards[c.id]};
+  }
+  render();
+}
+async function loadLatest(){
+  try{
+    const r=await fetch(`https://ntfy.sh/${CFG.topic}/json?poll=1&since=all`,{cache:"no-store"});
+    const txt=await r.text();
+    const lines=txt.trim().split(/\n+/).filter(Boolean);
+    for(let i=lines.length-1;i>=0;i--){
+      try{
+        const e=JSON.parse(lines[i]);
+        if(e.event==="message" && e.message){
+          applyIncoming(JSON.parse(e.message)); break;
+        }
+      }catch(_e){}
+    }
+  }catch(_e){}
+}
+function connect(){
+  try{
+    const es=new EventSource(`https://ntfy.sh/${CFG.topic}/sse`);
+    es.onmessage=(ev)=>{
+      try{const e=JSON.parse(ev.data); if(e.message) applyIncoming(JSON.parse(e.message));}catch(_e){}
+    };
+    es.onerror=()=>{setTimeout(connect,2500); try{es.close()}catch(_e){}};
+  }catch(_e){setTimeout(connect,2500)}
+}
+render();loadLatest();connect();
+</script>
+</body>
+</html>

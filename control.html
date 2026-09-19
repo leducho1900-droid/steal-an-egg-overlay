@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Steal An Egg Control V1</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0d0f13;color:#fff;font-family:Arial,Helvetica,sans-serif}
+main{max-width:1120px;margin:0 auto;padding:24px}h1{margin:0 0 8px;font-size:28px}.sub{color:#9aa4b2;margin-bottom:18px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}
+.primary{background:#1ea7fd;color:white}.green{background:#35d04f}.red{background:#ff4d4d;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pet-card{background:#171b22;border:1px solid #2b3038;border-radius:14px;padding:14px}
+.pet-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.pet-head strong{font-size:18px}.toggle{background:#35e75a;color:#07130a;min-width:106px}
+.pet-card.off .toggle{background:#ff5656;color:white}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.weight{font-weight:700}input[type=number]{width:105px;margin-left:8px;padding:9px;border-radius:9px;border:1px solid #3a424d;background:#0d1015;color:#fff;font-weight:800}
+.result{font-size:20px;font-weight:900;color:#46ff36}
+.mutations{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.mutations label{background:#0f1319;padding:8px;border-radius:8px;font-size:13px;white-space:nowrap}
+.static-note{color:#cbd3dd}
+.note{margin-top:18px;padding:12px;background:#11161d;border:1px solid #29313b;border-radius:12px;color:#aeb8c5;font-size:13px;line-height:1.5}
+@media(max-width:780px){.grid{grid-template-columns:1fr}.mutations{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body><main>
+<h1>🥚 Steal An Egg Control V1</h1>
+<div class="sub">Weight nhập tay 1–1000 • Mutation tự cộng hệ số • tiền cập nhật trực tiếp lên Overlay.</div>
+<div class="actions">
+<button class="green" id="allOn">Bật tất cả</button>
+<button class="red" id="allOff">Tắt tất cả</button>
+<button class="primary" id="reset">Reset Weight/Mutation</button>
+<button class="primary" id="copyLink">Copy Overlay Link</button>
+</div>
+<div class="grid">
+      <section class="pet-card" data-id="kitsune">
+        <div class="pet-head"><strong>Kitsune</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+      <section class="pet-card" data-id="luminous_cthulhu">
+        <div class="pet-head"><strong>Luminous Cthulhu</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+      <section class="pet-card" data-id="archangel">
+        <div class="pet-head"><strong>ArchAngel</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+      <section class="pet-card" data-id="aetheron">
+        <div class="pet-head"><strong>Aetheron</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+      <section class="pet-card" data-id="world_burner_cthulhu">
+        <div class="pet-head"><strong>World Burner Cthulhu</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+      <section class="pet-card" data-id="shattered_colossus">
+        <div class="pet-head"><strong>Shattered Colossus</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+      <section class="pet-card" data-id="nightflame">
+        <div class="pet-head"><strong>Nightflame</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+        <section class="pet-card" data-id="luminous_eggs">
+          <div class="pet-head"><strong>Luminous Eggs</strong><button class="toggle">ĐANG BẬT</button></div>
+          <div class="static-note">Giữ nguyên <b>X100</b> như ảnh gốc.</div>
+        </section>
+      <section class="pet-card" data-id="cthulhu">
+        <div class="pet-head"><strong>Cthulhu</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section>
+      <section class="pet-card" data-id="mecha_dreadscale">
+        <div class="pet-head"><strong>Mecha Dreadscale</strong><button class="toggle">ĐANG BẬT</button></div>
+        <div class="row">
+          <label class="weight">Weight <input type="number" min="1" max="1000" step="1" value="1"></label>
+          <div class="result">—</div>
+        </div>
+        <div class="mutations"><label><input type="checkbox" value="silver"> Silver</label><label><input type="checkbox" value="golden"> Golden</label><label><input type="checkbox" value="rainbow"> Rainbow</label><label><input type="checkbox" value="bloom"> Bloom</label><label><input type="checkbox" value="spirit_bloom"> Spirit Bloom</label><label><input type="checkbox" value="parasite"> Parasite</label><label><input type="checkbox" value="fractured"> Fractured</label></div>
+      </section></div>
+<div class="note">
+Ảnh gốc được giữ nguyên trong <b>cards_original.png</b>; web chỉ đặt lớp tiền động bên trên.
+Công thức dùng đường cong size của game: Scale = ∛Weight (chuẩn hóa mốc Weight 1), sau đó Scale^1.85 đến Scale 5; mutation cộng phần bonus trên ×1.
+</div>
+</main>
+<script src="config.js"></script>
+<script>
+const CFG=window.SAE_CONFIG;
+const KEY="sae_control_v1_state";
+const defaults={cards:{}};
+for(const c of CFG.cards) defaults.cards[c.id]={enabled:true,weight:1,mutations:[]};
+let state=JSON.parse(localStorage.getItem(KEY)||"null")||structuredClone(defaults);
+
+function sizeFactor(weight){
+ const scale=Math.cbrt(Math.max(1,Math.min(1000,Number(weight)||1)));
+ return scale<=5?Math.pow(scale,1.85):19.637875755794113*Math.pow(scale/5,1.2);
+}
+function mutationFactor(list){
+ let f=1; for(const key of [...new Set(list||[])]){ const m=CFG.mutations[key]?.multiplier||1; f+=Math.max(0,m-1); } return f;
+}
+function trim(v){return (Math.round(v*10)/10).toLocaleString("en-US",{maximumFractionDigits:1})}
+function fmt(n){
+ if(n>=1e15)return"$"+trim(n/1e15)+"Q/s";
+ if(n>=1e12)return"$"+trim(n/1e12)+"T/s";
+ if(n>=1e9)return"$"+trim(n/1e9)+"B/s";
+ if(n>=1e6)return"$"+trim(n/1e6)+"M/s";
+ if(n>=1e3)return"$"+trim(n/1e3)+"K/s";
+ return"$"+Math.round(n)+"/s";
+}
+async function publish(){
+ localStorage.setItem(KEY,JSON.stringify(state));
+ render();
+ try{await fetch(`https://ntfy.sh/${CFG.topic}`,{method:"POST",body:JSON.stringify(state)})}catch(_e){}
+}
+function render(){
+ for(const c of CFG.cards){
+   const sec=document.querySelector(`[data-id="${c.id}"]`); if(!sec)continue;
+   const s=state.cards[c.id]||defaults.cards[c.id];
+   sec.classList.toggle("off",!s.enabled);
+   sec.querySelector(".toggle").textContent=s.enabled?"ĐANG BẬT":"ĐANG TẮT";
+   if(c.dynamic){
+     const wi=sec.querySelector('input[type=number]'); wi.value=s.weight;
+     sec.querySelectorAll('.mutations input').forEach(cb=>cb.checked=(s.mutations||[]).includes(cb.value));
+     sec.querySelector(".result").textContent=fmt(c.base*sizeFactor(s.weight)*mutationFactor(s.mutations));
+   }
+ }
+}
+document.querySelectorAll(".pet-card").forEach(sec=>{
+ const id=sec.dataset.id,c=CFG.cards.find(x=>x.id===id);
+ sec.querySelector(".toggle").onclick=()=>{state.cards[id].enabled=!state.cards[id].enabled;publish()};
+ if(c?.dynamic){
+   sec.querySelector('input[type=number]').addEventListener("input",e=>{
+     let v=Math.round(Number(e.target.value)||1);v=Math.max(1,Math.min(1000,v));state.cards[id].weight=v;publish();
+   });
+   sec.querySelectorAll('.mutations input').forEach(cb=>cb.addEventListener("change",()=>{
+     state.cards[id].mutations=[...sec.querySelectorAll('.mutations input:checked')].map(x=>x.value);publish();
+   }));
+ }
+});
+allOn.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=true;publish()};
+allOff.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=false;publish()};
+reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[]}publish()};
+copyLink.onclick=async()=>{const u=new URL("index.html",location.href).href;try{await navigator.clipboard.writeText(u);copyLink.textContent="Đã copy";setTimeout(()=>copyLink.textContent="Copy Overlay Link",1200)}catch(_e){prompt("Copy link Overlay:",u)}};
+render();
+</script>
+</body></html>
