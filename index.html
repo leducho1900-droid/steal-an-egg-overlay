@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V2 FIXED</title>
+<title>Steal An Egg Overlay V3 SHARP</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -16,21 +16,22 @@ body{font-family:Arial,Helvetica,sans-serif}
   background:transparent;
 }
 #grid{
+  --gap:6px;
   width:min(97vw,1535px);
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
-  column-gap:clamp(7px,.82vw,13px);
-  row-gap:clamp(8px,1.15vh,17px);
+  gap:var(--gap);
   perspective:1100px;
+  align-items:start;
+  justify-content:center;
 }
 .slot{
   position:relative;
   aspect-ratio:0.705;
   min-width:0;
-  visibility:visible;
 }
 .slot.is-hidden{
-  visibility:hidden; /* giữ nguyên ô, không dồn layout, không sinh ảnh phụ */
+  display:none; /* không tạo ảnh phụ, thẻ tắt biến mất thật */
 }
 .card3d{
   position:absolute;inset:0;
@@ -47,36 +48,61 @@ body{font-family:Arial,Helvetica,sans-serif}
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:contain;display:block;
   user-select:none;pointer-events:none;
+  image-rendering:auto;
+  -webkit-font-smoothing:antialiased;
+  backface-visibility:hidden;
 }
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
 .price-cover{
   position:absolute;
-  left:8.2%;right:8.2%;top:26.35%;height:15.7%;
+  left:7.5%;right:7.5%;top:27.35%;height:12.55%;
   z-index:2;
   background:
     repeating-linear-gradient(135deg,
-      rgba(211,250,255,.95) 0 12px,
-      rgba(185,239,251,.95) 12px 28px);
+      rgba(255,255,255,.14) 0 9px,
+      rgba(255,255,255,0) 9px 23px),
+    linear-gradient(180deg,#a9eaf7 0%,#9be2f3 100%);
   border-radius:2px;
 }
 .price-text{
   position:absolute;
-  left:4.5%;right:4.5%;top:26.0%;height:16.4%;
+  left:3.8%;right:3.8%;top:27.05%;height:13.25%;
   z-index:3;
   display:flex;align-items:center;justify-content:center;
   overflow:visible;
-  color:#43ff16;
-  font-family:Impact,Haettenschweiler,"Arial Black",Arial,sans-serif;
-  font-weight:900;
-  font-size:15.2cqw;
+  color:#60EF01; /* lấy gần đúng màu xanh của chữ tiền gốc */
+  font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
+  font-weight:1000;
+  font-size:16.2cqw;
   line-height:.92;
-  letter-spacing:-.02em;
+  letter-spacing:-.075em;
   white-space:nowrap;
-  -webkit-text-stroke:1.45cqw #030303;
+  -webkit-text-stroke:1.05cqw #020202;
   paint-order:stroke fill;
-  text-shadow:0 .8cqw 0 #000;
+  text-shadow:0 .35cqw 0 #000;
   transform-origin:center center;
+  -webkit-font-smoothing:antialiased;
 }
+
+/* Bố cục tự gom thẻ đang bật, không clone/không sinh thêm ảnh */
+#grid.count-1{grid-template-columns:1fr;width:min(28vw,300px)}
+#grid.count-2{grid-template-columns:repeat(2,minmax(0,1fr));width:min(42vw,560px)}
+#grid.count-3{grid-template-columns:repeat(2,minmax(0,1fr));width:min(42vw,560px)}
+#grid.count-4{grid-template-columns:repeat(2,minmax(0,1fr));width:min(52vw,700px)}
+#grid.count-5{grid-template-columns:repeat(5,minmax(0,1fr));width:min(78vw,1180px)}
+#grid.count-6,#grid.count-7,#grid.count-8,#grid.count-9,#grid.count-10{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  width:min(97vw,1535px);
+}
+#grid.focus-three .slot[data-card="mecha_dreadscale"]{order:1}
+#grid.focus-three .slot[data-card="luminous_eggs"]{order:2}
+#grid.focus-three .slot[data-card="aetheron"]{
+  order:3;
+  grid-column:1 / -1;
+  justify-self:center;
+  width:calc((100% - var(--gap))/2);
+}
+
 @keyframes singleCard3D{
   0%{transform:perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)}
   22%{transform:perspective(900px) rotateX(-2.1deg) rotateY(4deg) scale(.975)}
@@ -85,8 +111,15 @@ body{font-family:Arial,Helvetica,sans-serif}
   100%{transform:perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)}
 }
 @media(max-aspect-ratio:1/1){
-  #stage{align-items:flex-start;overflow:auto;padding:12px}
-  #grid{grid-template-columns:repeat(2,minmax(0,1fr));width:min(94vw,800px);gap:10px}
+  #stage{align-items:center;overflow:hidden;padding:8px}
+  #grid{grid-template-columns:repeat(2,minmax(0,1fr));width:min(92vw,800px);gap:6px}
+  #grid.count-1{grid-template-columns:1fr;width:min(35vw,330px)}
+  #grid.count-2{grid-template-columns:repeat(2,minmax(0,1fr));width:min(55vw,560px)}
+  #grid.count-3{grid-template-columns:repeat(2,minmax(0,1fr));width:min(55vw,560px)}
+  #grid.count-4{grid-template-columns:repeat(2,minmax(0,1fr));width:min(66vw,680px)}
+  #grid.count-5,#grid.count-6,#grid.count-7,#grid.count-8,#grid.count-9,#grid.count-10{
+    grid-template-columns:repeat(2,minmax(0,1fr));width:min(86vw,760px)
+  }
 }
 </style>
 </head>
@@ -158,6 +191,10 @@ const CFG=window.SAE_CONFIG;
 const defaults={version:CFG.version,cards:{}};
 for(const c of CFG.cards) defaults.cards[c.id]={enabled:true,weight:1,mutations:[]};
 let state=structuredClone(defaults);
+let newestStateTime=0;
+const SHARED_KEY="sae-live-state-v3";
+let bc=null;
+try{bc=new BroadcastChannel("sae-overlay-v3")}catch(_e){}
 
 function clampWeight(v){
   v=Number(v);
@@ -206,6 +243,26 @@ function fitText(el){
     if(need>max && need>0) el.style.transform=`scaleX(${Math.max(.72,max/need)})`;
   });
 }
+function updateLayout(){
+  const grid=document.getElementById("grid");
+  grid.className="";
+  const visible=CFG.cards.filter(c=>(state.cards[c.id]||defaults.cards[c.id]).enabled!==false);
+  grid.classList.add(`count-${visible.length}`);
+  document.querySelectorAll(".slot").forEach((el,i)=>el.style.order=i+1);
+
+  const ids=new Set(visible.map(c=>c.id));
+  const exactThree=visible.length===3 &&
+    ids.has("mecha_dreadscale") && ids.has("luminous_eggs") && ids.has("aetheron");
+
+  if(exactThree){
+    grid.classList.add("focus-three");
+    document.querySelector('[data-card="mecha_dreadscale"]').style.order=1;
+    document.querySelector('[data-card="luminous_eggs"]').style.order=2;
+    document.querySelector('[data-card="aetheron"]').style.order=3;
+  }else{
+    grid.classList.remove("focus-three");
+  }
+}
 function render(){
   for(const c of CFG.cards){
     const el=document.querySelector(`[data-card="${c.id}"]`);
@@ -218,9 +275,13 @@ function render(){
       fitText(p);
     }
   }
+  updateLayout();
 }
 function applyIncoming(obj){
   if(!obj||!obj.cards)return;
+  const ts=Number(obj.updatedAt)||0;
+  if(ts && ts<newestStateTime)return;
+  if(ts)newestStateTime=ts;
   for(const c of CFG.cards){
     if(obj.cards[c.id]){
       state.cards[c.id]={
@@ -278,6 +339,12 @@ function moveOneCard(){
   card.classList.add("single-move");
   setTimeout(()=>card.classList.remove("single-move"),1400);
 }
+try{
+  const local=JSON.parse(localStorage.getItem(SHARED_KEY)||"null");
+  if(local)applyIncoming(local);
+}catch(_e){}
+window.addEventListener("storage",e=>{if(e.key===SHARED_KEY&&e.newValue){try{applyIncoming(JSON.parse(e.newValue))}catch(_e){}}});
+if(bc)bc.onmessage=e=>applyIncoming(e.data);
 render();
 loadLatest();
 connect();
