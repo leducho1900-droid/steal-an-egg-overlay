@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Control V3</title>
+<title>Steal An Egg Control V4</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -25,14 +25,32 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:poin
 .mut{display:flex;align-items:center;gap:6px;background:#0c1016;border:1px solid #222a34;border-radius:8px;padding:8px;font-size:12px}
 .mut span{flex:1}.mut small{color:#84ff79;font-weight:800}
 .static{margin-top:12px;color:#b7c0cb;font-size:13px}
+
+.qtyline{margin-top:11px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.qtytitle{font-weight:900;color:#dbe8f5;margin-right:3px}
+.qtybtn{
+  min-width:42px;
+  padding:7px 9px;
+  border-radius:8px;
+  border:1px solid #3a4656;
+  background:#0d1219;
+  color:#fff;
+  font-weight:1000;
+}
+.qtybtn.active{
+  background:#fff;
+  color:#0a0d12;
+  border-color:#fff;
+}
+
 .notice{margin-top:16px;background:#10151c;border:1px solid #2b3440;border-radius:12px;padding:12px;color:#b8c3cf;font-size:13px;line-height:1.55}
 @media(max-width:800px){.grid{grid-template-columns:1fr}.muts{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head><body><main>
-<h1>🥚 Steal An Egg Control V3 — FIXED</h1>
+<h1>🥚 Steal An Egg Control V4 — FIXED</h1>
 <div class="sub">
 Weight nhập <b>1–1000</b>. <b>Weight 1 = đúng tiền gốc</b>; tăng Weight thì tự nhân theo đường cong size.
-Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ tự nhân lại tiền ngay. Khi chỉ bật Mecha + Eggs + Aetheron: Mecha/Eggs ở trên, Aetheron ở giữa phía dưới.
+Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Số lượng x1–x10 chỉ là nhãn số pet: x1 không hiện nhãn; chọn x2 thì hiện x2, bấm x5 sẽ tự thay x2 thành x5. Luminous Eggs không có nhãn số lượng.
 </div>
 <div class="actions">
 <button id="allOn" class="green">Bật tất cả</button>
@@ -51,6 +69,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="luminous_cthulhu">
@@ -63,6 +94,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="archangel">
@@ -75,6 +119,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="aetheron">
@@ -87,6 +144,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="world_burner_cthulhu">
@@ -99,6 +169,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="shattered_colossus">
@@ -111,6 +194,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="nightflame">
@@ -123,6 +219,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="luminous_eggs">
@@ -142,6 +251,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section>
 <section class="pet" data-id="mecha_dreadscale">
@@ -154,6 +276,19 @@ Mutation cộng bonus theo hệ số. Mỗi thay đổi Weight/Mutation sẽ t�
     <div class="money" data-result>—</div>
   </div>
   <div class="calc" data-calc></div>
+  <div class="qtyline" data-qtyline>
+    <span class="qtytitle">Số lượng</span>
+    <button type="button" class="qtybtn" data-q="1">x1</button>
+    <button type="button" class="qtybtn" data-q="2">x2</button>
+    <button type="button" class="qtybtn" data-q="3">x3</button>
+    <button type="button" class="qtybtn" data-q="4">x4</button>
+    <button type="button" class="qtybtn" data-q="5">x5</button>
+    <button type="button" class="qtybtn" data-q="6">x6</button>
+    <button type="button" class="qtybtn" data-q="7">x7</button>
+    <button type="button" class="qtybtn" data-q="8">x8</button>
+    <button type="button" class="qtybtn" data-q="9">x9</button>
+    <button type="button" class="qtybtn" data-q="10">x10</button>
+  </div>
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section></div>
 <div class="notice">
@@ -168,7 +303,7 @@ File <b>cards_original.png</b> và pet/card gốc không bị chỉnh sửa. Ove
 const CFG=window.SAE_CONFIG, KEY="sae-control-v2-fixed", SHARED_KEY="sae-live-state-v3";
 let bc=null;try{bc=new BroadcastChannel("sae-overlay-v3")}catch(_e){}
 const defaults={version:CFG.version,cards:{}};
-for(const c of CFG.cards)defaults.cards[c.id]={enabled:true,weight:1,mutations:[]};
+for(const c of CFG.cards)defaults.cards[c.id]={enabled:true,weight:1,mutations:[],qty:1};
 let state;
 try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(defaults)}catch(_e){state=structuredClone(defaults)}
 for(const c of CFG.cards)state.cards[c.id]={...defaults.cards[c.id],...(state.cards[c.id]||{})};
@@ -203,6 +338,8 @@ function render(){
   if(c.dynamic){
    const wi=sec.querySelector('input[type=number]');if(document.activeElement!==wi)wi.value=s.weight;
    sec.querySelectorAll('.muts input').forEach(cb=>cb.checked=(s.mutations||[]).includes(cb.value));
+   const q=Math.max(1,Math.min(10,Math.round(Number(s.qty)||1)));
+   sec.querySelectorAll('.qtybtn').forEach(btn=>btn.classList.toggle("active",Number(btn.dataset.q)===q));
    const sf=sizeFactor(s.weight), mf=mutFactor(s.mutations), val=c.base*sf*mf;
    sec.querySelector("[data-result]").textContent=fmt(val);
    sec.querySelector("[data-calc]").textContent=`Base ${fmt(c.base)} × Size ${sf.toFixed(3)} × Mutation ${mf.toFixed(2)} = ${fmt(val)}`;
@@ -232,11 +369,15 @@ document.querySelectorAll(".pet").forEach(sec=>{
    sec.querySelectorAll('.muts input').forEach(cb=>cb.addEventListener("change",()=>{
      state.cards[id].mutations=[...sec.querySelectorAll('.muts input:checked')].map(x=>x.value);saveAndPublish();
    }));
+   sec.querySelectorAll('.qtybtn').forEach(btn=>btn.addEventListener("click",()=>{
+     state.cards[id].qty=Math.max(1,Math.min(10,Number(btn.dataset.q)||1));
+     saveAndPublish();
+   }));
  }
 });
 allOn.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=true;saveAndPublish()};
 allOff.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=false;saveAndPublish()};
-reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[]}saveAndPublish()};
+reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[];state.cards[c.id].qty=1}saveAndPublish()};
 copyLink.onclick=async()=>{
  const u=new URL("index.html",location.href).href;
  try{await navigator.clipboard.writeText(u);copyLink.textContent="ĐÃ COPY";setTimeout(()=>copyLink.textContent="Copy Overlay Link",1200)}

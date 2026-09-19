@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V3 SHARP</title>
+<title>Steal An Egg Overlay V4 QUANTITY</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -84,6 +84,36 @@ body{font-family:Arial,Helvetica,sans-serif}
   -webkit-font-smoothing:antialiased;
 }
 
+
+.qty-badge{
+  position:absolute;
+  top:2.4%;
+  right:3.4%;
+  z-index:6;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  min-width:18%;
+  height:10.2%;
+  padding:0 2.3%;
+  color:#fff;
+  font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
+  font-size:9.5cqw;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.07em;
+  white-space:nowrap;
+  -webkit-text-stroke:.72cqw #050505;
+  paint-order:stroke fill;
+  text-shadow:0 .25cqw 0 #000;
+  transform:none;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  pointer-events:none;
+}
+.qty-badge.show{display:flex}
+
 /* Bố cục tự gom thẻ đang bật, không clone/không sinh thêm ảnh */
 #grid.count-1{grid-template-columns:1fr;width:min(28vw,300px)}
 #grid.count-2{grid-template-columns:repeat(2,minmax(0,1fr));width:min(42vw,560px)}
@@ -128,43 +158,43 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="kitsune">
       <div class="card3d">
         <img class="card-img" src="cards/kitsune.png" alt="Kitsune" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="luminous_cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/luminous_cthulhu.png" alt="Luminous Cthulhu" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="archangel">
       <div class="card3d">
         <img class="card-img" src="cards/archangel.png" alt="ArchAngel" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="aetheron">
       <div class="card3d">
         <img class="card-img" src="cards/aetheron.png" alt="Aetheron" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="world_burner_cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/world_burner_cthulhu.png" alt="World Burner Cthulhu" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="shattered_colossus">
       <div class="card3d">
         <img class="card-img" src="cards/shattered_colossus.png" alt="Shattered Colossus" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="nightflame">
       <div class="card3d">
         <img class="card-img" src="cards/nightflame.png" alt="Nightflame" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="luminous_eggs">
@@ -176,20 +206,20 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/cthulhu.png" alt="Cthulhu" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div>
     <div class="slot" data-card="mecha_dreadscale">
       <div class="card3d">
         <img class="card-img" src="cards/mecha_dreadscale.png" alt="Mecha Dreadscale" draggable="false">
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div><div class="qty-badge" data-qty></div>
       </div>
     </div></div></div>
 <script src="config.js"></script>
 <script>
 const CFG=window.SAE_CONFIG;
 const defaults={version:CFG.version,cards:{}};
-for(const c of CFG.cards) defaults.cards[c.id]={enabled:true,weight:1,mutations:[]};
+for(const c of CFG.cards) defaults.cards[c.id]={enabled:true,weight:1,mutations:[],qty:1};
 let state=structuredClone(defaults);
 let newestStateTime=0;
 const SHARED_KEY="sae-live-state-v3";
@@ -273,6 +303,13 @@ function render(){
       const p=el.querySelector("[data-price]");
       p.textContent=fmt(val);
       fitText(p);
+
+      const qb=el.querySelector("[data-qty]");
+      if(qb){
+        const q=Math.max(1,Math.min(10,Math.round(Number(s.qty)||1)));
+        qb.textContent=q>1?`x${q}`:"";
+        qb.classList.toggle("show",q>1);
+      }
     }
   }
   updateLayout();
@@ -288,7 +325,8 @@ function applyIncoming(obj){
         ...state.cards[c.id],
         enabled:obj.cards[c.id].enabled!==false,
         weight:clampWeight(obj.cards[c.id].weight),
-        mutations:Array.isArray(obj.cards[c.id].mutations)?obj.cards[c.id].mutations:[]
+        mutations:Array.isArray(obj.cards[c.id].mutations)?obj.cards[c.id].mutations:[],
+        qty:Math.max(1,Math.min(10,Math.round(Number(obj.cards[c.id].qty)||1)))
       };
     }
   }
