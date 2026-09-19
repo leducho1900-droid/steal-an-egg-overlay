@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.5 FULL RAINBOW PET</title>
+<title>Steal An Egg Overlay V5.6 PET SHRINK COLOR FIX</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -53,25 +53,53 @@ body{font-family:Arial,Helvetica,sans-serif}
   backface-visibility:hidden;
 }
 
-/* V5.5 — bảy màu phủ TRÊN TOÀN BỘ PET, nhưng form/pixel gốc vẫn giữ nguyên.
-   Lớp rainbow chỉ dùng alpha của pet gốc làm mask, không vẽ lại pet. */
+/* V5.6 — PET thật thu vào 4 giây, bung ra 3 giây.
+   RGB pet lấy nguyên từ ảnh gốc; rainbow chỉ là lớp tint mềm phía trên. */
+.pet-hole{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,.12) 0 7%,
+      rgba(255,255,255,0) 7% 18%
+    ),
+    linear-gradient(180deg,#b7f2ff 0%,#9ce7f7 100%);
+  -webkit-mask-image:var(--cover-mask);
+  mask-image:var(--cover-mask);
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  mask-position:center;
+}
+.pet-fx-group{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  transform-origin:50% 67%;
+  will-change:transform;
+  animation:petShrinkGrow 7s ease-in-out infinite;
+}
 .pet-pixels{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
   object-fit:contain;
-  z-index:3;
+  z-index:1;
   pointer-events:none;
   user-select:none;
 }
 .pet-aura{
   position:absolute;
   inset:0;
-  z-index:4;
+  z-index:2;
   pointer-events:none;
-
-  /* Bảy màu loang chạy bên trong đúng silhouette pet */
   background:
     linear-gradient(
       125deg,
@@ -85,8 +113,6 @@ body{font-family:Arial,Helvetica,sans-serif}
       #ff3ea5 100%
     );
   background-size:280% 280%;
-  background-position:0% 50%;
-
   -webkit-mask-image:var(--pet-mask);
   mask-image:var(--pet-mask);
   -webkit-mask-size:100% 100%;
@@ -96,24 +122,22 @@ body{font-family:Arial,Helvetica,sans-serif}
   -webkit-mask-position:center;
   mask-position:center;
 
-  /* Giữ chi tiết sáng/tối của pet gốc bên dưới */
-  mix-blend-mode:color;
-  opacity:.88;
-  filter:saturate(1.22) brightness(.96);
-
-  transform-origin:50% 67%;
-  animation:petRainbowFillPulse 6s ease-in-out infinite;
+  /* Giữ màu gốc nhìn thấy rõ, rainbow chỉ loang thêm lên pet. */
+  mix-blend-mode:soft-light;
+  opacity:.72;
+  filter:saturate(1.12) brightness(1.01);
+  animation:rainbowFlow 3.2s linear infinite;
 }
-
-/* 0→3 giây: rainbow thu vào.
-   3→6 giây: rainbow bung ra lại.
-   PET GỐC KHÔNG scale / không đổi form. */
-@keyframes petRainbowFillPulse{
-  0%,100%{
-    transform:scale(1);
-    background-position:0% 50%;
-    opacity:.90;
-  }
+@keyframes petShrinkGrow{
+  0%   { transform:scale(1); }
+  57.142% { transform:scale(.79); } /* 4 giây thu vào */
+  100% { transform:scale(1); }      /* 3 giây bung ra */
+}
+@keyframes rainbowFlow{
+  0%   { background-position:0% 50%; }
+  50%  { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
+}
   25%{
     background-position:55% 35%;
   }
@@ -145,7 +169,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   z-index:5;
   display:flex;align-items:center;justify-content:center;
   overflow:visible;
-  color:#3BC900; /* lấy gần đúng màu xanh của chữ tiền gốc */
+  color:#35B900; /* lấy gần đúng màu xanh của chữ tiền gốc */
   font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
   font-weight:1000;
   font-size:16.2cqw;
@@ -154,7 +178,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   white-space:nowrap;
   -webkit-text-stroke:1.05cqw #020202;
   paint-order:stroke fill;
-  text-shadow:0 .20cqw 0 #000;
+  text-shadow:0 .16cqw 0 #000;
   transform-origin:center center;
   -webkit-font-smoothing:antialiased;
 }
@@ -234,8 +258,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="kitsune">
       <div class="card3d">
         <img class="card-img" src="cards/kitsune.png" alt="Kitsune" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/kitsune.png')"></div>
-        <img class="pet-pixels" src="pet_layers/kitsune.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/kitsune.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/kitsune.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/kitsune.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -244,8 +271,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="luminous_cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/luminous_cthulhu.png" alt="Luminous Cthulhu" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/luminous_cthulhu.png')"></div>
-        <img class="pet-pixels" src="pet_layers/luminous_cthulhu.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/luminous_cthulhu.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/luminous_cthulhu.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/luminous_cthulhu.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -254,8 +284,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="archangel">
       <div class="card3d">
         <img class="card-img" src="cards/archangel.png" alt="ArchAngel" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/archangel.png')"></div>
-        <img class="pet-pixels" src="pet_layers/archangel.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/archangel.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/archangel.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/archangel.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -264,8 +297,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="aetheron">
       <div class="card3d">
         <img class="card-img" src="cards/aetheron.png" alt="Aetheron" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/aetheron.png')"></div>
-        <img class="pet-pixels" src="pet_layers/aetheron.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/aetheron.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/aetheron.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/aetheron.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -274,8 +310,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="world_burner_cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/world_burner_cthulhu.png" alt="World Burner Cthulhu" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/world_burner_cthulhu.png')"></div>
-        <img class="pet-pixels" src="pet_layers/world_burner_cthulhu.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/world_burner_cthulhu.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/world_burner_cthulhu.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/world_burner_cthulhu.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -284,8 +323,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="shattered_colossus">
       <div class="card3d">
         <img class="card-img" src="cards/shattered_colossus.png" alt="Shattered Colossus" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/shattered_colossus.png')"></div>
-        <img class="pet-pixels" src="pet_layers/shattered_colossus.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/shattered_colossus.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/shattered_colossus.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/shattered_colossus.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -294,8 +336,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="nightflame">
       <div class="card3d">
         <img class="card-img" src="cards/nightflame.png" alt="Nightflame" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/nightflame.png')"></div>
-        <img class="pet-pixels" src="pet_layers/nightflame.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/nightflame.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/nightflame.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/nightflame.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -310,8 +355,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/cthulhu.png" alt="Cthulhu" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/cthulhu.png')"></div>
-        <img class="pet-pixels" src="pet_layers/cthulhu.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/cthulhu.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/cthulhu.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/cthulhu.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -320,8 +368,11 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="mecha_dreadscale">
       <div class="card3d">
         <img class="card-img" src="cards/mecha_dreadscale.png" alt="Mecha Dreadscale" draggable="false">
-        <div class="pet-aura" style="--pet-mask:url('pet_layers/mecha_dreadscale.png')"></div>
-        <img class="pet-pixels" src="pet_layers/mecha_dreadscale.png" alt="" aria-hidden="true" draggable="false">
+        <div class="pet-hole" style="--cover-mask:url('pet_masks/mecha_dreadscale.png')" aria-hidden="true"></div>
+        <div class="pet-fx-group" aria-hidden="true">
+          <img class="pet-pixels" src="pet_layers/mecha_dreadscale.png" alt="" draggable="false">
+          <div class="pet-aura" style="--pet-mask:url('pet_layers/mecha_dreadscale.png')"></div>
+        </div>
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -437,11 +488,14 @@ function applyIncoming(obj){
   if(ts)newestStateTime=ts;
   for(const c of CFG.cards){
     if(obj.cards[c.id]){
+      const oldBaseState = String(obj.version||"")!=="5.6-base13";
+      const forceBase13 = c.id==="luminous_cthulhu" && oldBaseState;
       state.cards[c.id]={
         ...state.cards[c.id],
         enabled:obj.cards[c.id].enabled!==false,
-        weight:clampWeight(obj.cards[c.id].weight),
-        mutations:Array.isArray(obj.cards[c.id].mutations)?obj.cards[c.id].mutations:[],
+        weight:forceBase13 ? 1 : clampWeight(obj.cards[c.id].weight),
+        mutations:forceBase13 ? [] :
+          (Array.isArray(obj.cards[c.id].mutations)?obj.cards[c.id].mutations:[]),
         qty:(obj.cards[c.id].qty==null ? (state.cards[c.id].qty||1) :
           Math.max(1,Math.min(10,Math.round(Number(obj.cards[c.id].qty)||1))))
       };
