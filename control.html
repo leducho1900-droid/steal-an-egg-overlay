@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Control V5.4</title>
+<title>Steal An Egg Control V5.5</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -49,7 +49,7 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:poin
 @media(max-width:800px){.grid{grid-template-columns:1fr}.muts{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head><body><main>
-<h1>🥚 Steal An Egg Control V5.4 — FIXED</h1>
+<h1>🥚 Steal An Egg Control V5.5 — FIXED</h1>
 <div class="sub"><span class="syncstatus" id="syncStatus">● Đang kiểm tra D1...</span> 
 Weight nhập <b>1–1000</b>. <b>Weight 1 = đúng tiền gốc</b>; tăng Weight thì tự nhân theo đường cong size.
 Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Đồng bộ qua Cloudflare D1, không dùng Cache API. Weight/Mutation/Bật-Tắt/x2–x10 cập nhật chung một state; x1 không hiện nhãn, Luminous Eggs không có nhãn số lượng.
@@ -88,7 +88,7 @@ Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Đồng
 </section>
 <section class="pet" data-id="luminous_cthulhu">
   <div class="head">
-    <div><strong>Luminous Cthulhu</strong><div class="base">Gốc: <b>50B/s</b></div></div>
+    <div><strong>Luminous Cthulhu</strong><div class="base">Gốc: <b>13B/s</b></div></div>
     <button class="toggle on">ĐANG BẬT</button>
   </div>
   <div class="line">
@@ -294,7 +294,7 @@ Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Đồng
   <div class="muts"><label class="mut"><input type="checkbox" value="silver"><span>Silver</span><small>×1.2</small></label><label class="mut"><input type="checkbox" value="golden"><span>Golden</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="rainbow"><span>Rainbow</span><small>×3.5</small></label><label class="mut"><input type="checkbox" value="bloom"><span>Bloom</span><small>×1.25</small></label><label class="mut"><input type="checkbox" value="spirit_bloom"><span>Spirit Bloom</span><small>×2.5</small></label><label class="mut"><input type="checkbox" value="parasite"><span>Parasite</span><small>×3</small></label><label class="mut"><input type="checkbox" value="fractured"><span>Fractured</span><small>×2.75</small></label></div>
 </section></div>
 <div class="notice">
-<b>Giá gốc đã sửa:</b> Kitsune 1.8B/s • Luminous Cthulhu 50B/s (Cthulhu 5B × Luminous 10) •
+<b>Giá gốc đã sửa:</b> Kitsune 1.8B/s • Luminous Cthulhu 13B/s •
 ArchAngel 5B/s • Aetheron 6.9B/s • World Burner 5B/s • Shattered Colossus 3.5B/s •
 Nightflame 3B/s • Cthulhu 5B/s • Mecha Dreadscale 4B/s.<br>
 File <b>cards_original.png</b> và pet/card gốc không bị chỉnh sửa. Overlay chỉ che đúng dòng tiền cũ bằng lớp web rồi đặt số mới lên.
@@ -410,6 +410,21 @@ function applyRemoteToControl(obj){
  return true;
 }
 
+
+const BASE_MIGRATION_KEY="sae-v55-luminous-base13-reset";
+function migrateLuminousBase13Once(){
+  if(localStorage.getItem(BASE_MIGRATION_KEY)==="1")return false;
+  if(!state.cards.luminous_cthulhu)return false;
+
+  /* Base mới là 13B/s. Reset CHỈ Weight + Mutation của Luminous Cthulhu
+     để lần đầu sau update nó hiện đúng 13B/s thay vì giữ multiplier cũ. */
+  state.cards.luminous_cthulhu.weight=1;
+  state.cards.luminous_cthulhu.mutations=[];
+  localStorage.setItem(BASE_MIGRATION_KEY,"1");
+  saveAndPublish();
+  return true;
+}
+
 async function loadD1State(){
  const status=document.getElementById("syncStatus");
  if(!API||!ROOM){
@@ -424,7 +439,9 @@ async function loadD1State(){
    const data=await r.json();
    if(data&&data.ok&&data.state){
      applyRemoteToControl(data.state);
-     if(status){status.textContent="● Đã kết nối D1";status.style.color="#55ff78"}
+     if(!migrateLuminousBase13Once()){
+       if(status){status.textContent="● Đã kết nối D1";status.style.color="#55ff78"}
+     }
    }else{
      if(status){status.textContent="● D1 trống — đang tạo state";status.style.color="#ffd75a"}
      saveAndPublish();
@@ -463,7 +480,7 @@ allOn.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=true;saveA
 allOff.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=false;saveAndPublish()};
 reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[];state.cards[c.id].qty=1}saveAndPublish()};
 copyLink.onclick=async()=>{
- const u=new URL("index.html?v=54",location.href).href;
+ const u=new URL("index.html?v=55",location.href).href;
  try{await navigator.clipboard.writeText(u);copyLink.textContent="ĐÃ COPY";setTimeout(()=>copyLink.textContent="Copy Overlay Link",1200)}
  catch(_e){prompt("Copy link Overlay:",u)}
 };

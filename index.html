@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.4 RAINBOW PET AURA</title>
+<title>Steal An Egg Overlay V5.5 FULL RAINBOW PET</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -53,10 +53,79 @@ body{font-family:Arial,Helvetica,sans-serif}
   backface-visibility:hidden;
 }
 
-/* V5.4 — hiệu ứng bảy màu CHỈ quanh pet. */
-.pet-aura{position:absolute;inset:0;z-index:2;pointer-events:none;background:conic-gradient(from 0deg,#ff2d2d,#ffad2d,#fff32d,#35ff5a,#2de7ff,#4368ff,#b53cff,#ff2d8f,#ff2d2d);-webkit-mask-image:var(--pet-mask);mask-image:var(--pet-mask);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;transform-origin:50% 68%;animation:petRainbowPulse 6s ease-in-out infinite;filter:blur(10px) saturate(1.12);opacity:.72;}
-.pet-pixels{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none;user-select:none;}
-@keyframes petRainbowPulse{0%,100%{transform:scale(1.085);filter:blur(12px) saturate(1.15);opacity:.76}50%{transform:scale(.975);filter:blur(6px) saturate(1.08);opacity:.50}}
+/* V5.5 — bảy màu phủ TRÊN TOÀN BỘ PET, nhưng form/pixel gốc vẫn giữ nguyên.
+   Lớp rainbow chỉ dùng alpha của pet gốc làm mask, không vẽ lại pet. */
+.pet-pixels{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  z-index:3;
+  pointer-events:none;
+  user-select:none;
+}
+.pet-aura{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+
+  /* Bảy màu loang chạy bên trong đúng silhouette pet */
+  background:
+    linear-gradient(
+      125deg,
+      #ff3040 0%,
+      #ff9a2f 14%,
+      #ffe52f 28%,
+      #42ed61 42%,
+      #31e8ef 56%,
+      #3f72ff 70%,
+      #a94dff 84%,
+      #ff3ea5 100%
+    );
+  background-size:280% 280%;
+  background-position:0% 50%;
+
+  -webkit-mask-image:var(--pet-mask);
+  mask-image:var(--pet-mask);
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  mask-position:center;
+
+  /* Giữ chi tiết sáng/tối của pet gốc bên dưới */
+  mix-blend-mode:color;
+  opacity:.88;
+  filter:saturate(1.22) brightness(.96);
+
+  transform-origin:50% 67%;
+  animation:petRainbowFillPulse 6s ease-in-out infinite;
+}
+
+/* 0→3 giây: rainbow thu vào.
+   3→6 giây: rainbow bung ra lại.
+   PET GỐC KHÔNG scale / không đổi form. */
+@keyframes petRainbowFillPulse{
+  0%,100%{
+    transform:scale(1);
+    background-position:0% 50%;
+    opacity:.90;
+  }
+  25%{
+    background-position:55% 35%;
+  }
+  50%{
+    transform:scale(.88);
+    background-position:100% 50%;
+    opacity:.82;
+  }
+  75%{
+    background-position:45% 70%;
+  }
+}
 
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
 .price-cover{
@@ -76,7 +145,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   z-index:5;
   display:flex;align-items:center;justify-content:center;
   overflow:visible;
-  color:#49D600; /* lấy gần đúng màu xanh của chữ tiền gốc */
+  color:#3BC900; /* lấy gần đúng màu xanh của chữ tiền gốc */
   font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
   font-weight:1000;
   font-size:16.2cqw;
@@ -85,7 +154,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   white-space:nowrap;
   -webkit-text-stroke:1.05cqw #020202;
   paint-order:stroke fill;
-  text-shadow:0 .28cqw 0 #000;
+  text-shadow:0 .20cqw 0 #000;
   transform-origin:center center;
   -webkit-font-smoothing:antialiased;
 }
