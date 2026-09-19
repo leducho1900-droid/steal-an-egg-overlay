@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.3 X2 LARGER</title>
+<title>Steal An Egg Overlay V5.4 RAINBOW PET AURA</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -52,11 +52,17 @@ body{font-family:Arial,Helvetica,sans-serif}
   -webkit-font-smoothing:antialiased;
   backface-visibility:hidden;
 }
+
+/* V5.4 — hiệu ứng bảy màu CHỈ quanh pet. */
+.pet-aura{position:absolute;inset:0;z-index:2;pointer-events:none;background:conic-gradient(from 0deg,#ff2d2d,#ffad2d,#fff32d,#35ff5a,#2de7ff,#4368ff,#b53cff,#ff2d8f,#ff2d2d);-webkit-mask-image:var(--pet-mask);mask-image:var(--pet-mask);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;transform-origin:50% 68%;animation:petRainbowPulse 6s ease-in-out infinite;filter:blur(10px) saturate(1.12);opacity:.72;}
+.pet-pixels{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none;user-select:none;}
+@keyframes petRainbowPulse{0%,100%{transform:scale(1.085);filter:blur(12px) saturate(1.15);opacity:.76}50%{transform:scale(.975);filter:blur(6px) saturate(1.08);opacity:.50}}
+
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
 .price-cover{
   position:absolute;
   left:7.5%;right:7.5%;top:27.35%;height:12.55%;
-  z-index:2;
+  z-index:4;
   background:
     repeating-linear-gradient(135deg,
       rgba(255,255,255,.14) 0 9px,
@@ -67,10 +73,10 @@ body{font-family:Arial,Helvetica,sans-serif}
 .price-text{
   position:absolute;
   left:3.8%;right:3.8%;top:27.05%;height:13.25%;
-  z-index:3;
+  z-index:5;
   display:flex;align-items:center;justify-content:center;
   overflow:visible;
-  color:#60EF01; /* lấy gần đúng màu xanh của chữ tiền gốc */
+  color:#49D600; /* lấy gần đúng màu xanh của chữ tiền gốc */
   font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
   font-weight:1000;
   font-size:16.2cqw;
@@ -79,7 +85,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   white-space:nowrap;
   -webkit-text-stroke:1.05cqw #020202;
   paint-order:stroke fill;
-  text-shadow:0 .35cqw 0 #000;
+  text-shadow:0 .28cqw 0 #000;
   transform-origin:center center;
   -webkit-font-smoothing:antialiased;
 }
@@ -159,6 +165,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="kitsune">
       <div class="card3d">
         <img class="card-img" src="cards/kitsune.png" alt="Kitsune" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/kitsune.png')"></div>
+        <img class="pet-pixels" src="pet_layers/kitsune.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -167,6 +175,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="luminous_cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/luminous_cthulhu.png" alt="Luminous Cthulhu" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/luminous_cthulhu.png')"></div>
+        <img class="pet-pixels" src="pet_layers/luminous_cthulhu.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -175,6 +185,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="archangel">
       <div class="card3d">
         <img class="card-img" src="cards/archangel.png" alt="ArchAngel" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/archangel.png')"></div>
+        <img class="pet-pixels" src="pet_layers/archangel.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -183,6 +195,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="aetheron">
       <div class="card3d">
         <img class="card-img" src="cards/aetheron.png" alt="Aetheron" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/aetheron.png')"></div>
+        <img class="pet-pixels" src="pet_layers/aetheron.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -191,6 +205,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="world_burner_cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/world_burner_cthulhu.png" alt="World Burner Cthulhu" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/world_burner_cthulhu.png')"></div>
+        <img class="pet-pixels" src="pet_layers/world_burner_cthulhu.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -199,6 +215,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="shattered_colossus">
       <div class="card3d">
         <img class="card-img" src="cards/shattered_colossus.png" alt="Shattered Colossus" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/shattered_colossus.png')"></div>
+        <img class="pet-pixels" src="pet_layers/shattered_colossus.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -207,6 +225,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="nightflame">
       <div class="card3d">
         <img class="card-img" src="cards/nightflame.png" alt="Nightflame" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/nightflame.png')"></div>
+        <img class="pet-pixels" src="pet_layers/nightflame.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -221,6 +241,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="cthulhu">
       <div class="card3d">
         <img class="card-img" src="cards/cthulhu.png" alt="Cthulhu" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/cthulhu.png')"></div>
+        <img class="pet-pixels" src="pet_layers/cthulhu.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
@@ -229,6 +251,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="mecha_dreadscale">
       <div class="card3d">
         <img class="card-img" src="cards/mecha_dreadscale.png" alt="Mecha Dreadscale" draggable="false">
+        <div class="pet-aura" style="--pet-mask:url('pet_layers/mecha_dreadscale.png')"></div>
+        <img class="pet-pixels" src="pet_layers/mecha_dreadscale.png" alt="" aria-hidden="true" draggable="false">
         <div class="qty-badge" data-qty></div>
         <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
