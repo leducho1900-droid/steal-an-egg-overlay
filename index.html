@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.31 TEXT COLOR STRONG</title>
+<title>Steal An Egg Overlay V5.32 LAYOUT 3 PER ROW</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -18,11 +18,11 @@ body{font-family:Arial,Helvetica,sans-serif}
 #grid{
   --gap:6px;
   width:min(97vw,1535px);
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
+  display:flex;
+  flex-wrap:wrap;
   gap:var(--gap);
   perspective:1100px;
-  align-items:start;
+  align-items:flex-start;
   justify-content:center;
 }
 .slot{
@@ -245,23 +245,41 @@ body{font-family:Arial,Helvetica,sans-serif}
 .qty-badge.show{display:flex!important;visibility:visible!important;opacity:1!important}
 
 /* Bố cục tự gom thẻ đang bật, không clone/không sinh thêm ảnh */
-#grid.count-1{grid-template-columns:1fr;width:min(28vw,300px)}
-#grid.count-2{grid-template-columns:repeat(2,minmax(0,1fr));width:min(42vw,560px)}
-#grid.count-3{grid-template-columns:repeat(2,minmax(0,1fr));width:min(42vw,560px)}
-#grid.count-4{grid-template-columns:repeat(2,minmax(0,1fr));width:min(52vw,700px)}
-#grid.count-5{grid-template-columns:repeat(5,minmax(0,1fr));width:min(78vw,1180px)}
-#grid.count-6,#grid.count-7,#grid.count-8,#grid.count-9,#grid.count-10{
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  width:min(97vw,1535px);
+#grid.count-1{width:min(30vw,420px)}
+#grid.count-1 .slot{flex:0 0 100%}
+
+#grid.count-2{width:min(58vw,820px)}
+#grid.count-2 .slot{flex:0 0 calc((100% - var(--gap))/2)}
+
+#grid.count-3,#grid.count-4{width:min(70vw,980px)}
+#grid.count-3 .slot,#grid.count-4 .slot{flex:0 0 calc((100% - var(--gap))/2)}
+
+#grid.count-5,#grid.count-6{
+  width:min(92vw,1180px);
 }
-#grid.focus-three .slot[data-card="mecha_dreadscale"]{order:1}
-#grid.focus-three .slot[data-card="luminous_eggs"]{order:2}
-#grid.focus-three .slot[data-card="aetheron"]{
-  order:3;
-  grid-column:1 / -1;
-  justify-self:center;
-  width:calc((100% - var(--gap))/2);
+#grid.count-5 .slot,#grid.count-6 .slot{
+  flex:0 0 calc((100% - (2 * var(--gap)))/3);
 }
+
+#grid.count-7,#grid.count-8,#grid.count-9{
+  width:min(86vw,980px);
+}
+#grid.count-7 .slot,#grid.count-8 .slot,#grid.count-9 .slot{
+  flex:0 0 calc((100% - (2 * var(--gap)))/3);
+}
+
+#grid.count-10{
+  width:min(78vw,850px);
+}
+#grid.count-10 .slot{
+  flex:0 0 calc((100% - (2 * var(--gap)))/3);
+}
+
+/* Flex + justify-content:center tự canh giữa hàng cuối:
+   3 ảnh = 2 trên + 1 dưới giữa.
+   5 ảnh = 3 trên + 2 dưới giữa.
+   6 ảnh = 3 trên + 3 dưới.
+   7/8/9/10 cứ lặp lại 3 ảnh mỗi hàng, hàng cuối tự giữa. */
 
 @keyframes singleCard3D{
   0%{transform:perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)}
@@ -474,19 +492,6 @@ function updateLayout(){
   const visible=CFG.cards.filter(c=>(state.cards[c.id]||defaults.cards[c.id]).enabled!==false);
   grid.classList.add(`count-${visible.length}`);
   document.querySelectorAll(".slot").forEach((el,i)=>el.style.order=i+1);
-
-  const ids=new Set(visible.map(c=>c.id));
-  const exactThree=visible.length===3 &&
-    ids.has("mecha_dreadscale") && ids.has("luminous_eggs") && ids.has("aetheron");
-
-  if(exactThree){
-    grid.classList.add("focus-three");
-    document.querySelector('[data-card="mecha_dreadscale"]').style.order=1;
-    document.querySelector('[data-card="luminous_eggs"]').style.order=2;
-    document.querySelector('[data-card="aetheron"]').style.order=3;
-  }else{
-    grid.classList.remove("focus-three");
-  }
 }
 function render(){
   for(const c of CFG.cards){
