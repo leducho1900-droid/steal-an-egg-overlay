@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Control V5.27</title>
+<title>Steal An Egg Control V5.28</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -45,11 +45,30 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:poin
 .qtycurrent{font-weight:900;color:#55ff3b;margin-left:5px}
 .syncstatus{font-weight:900;color:#8fb7ff;margin-left:8px}
 
+.eggmultline{margin-top:12px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.eggtitle{font-weight:900;color:#dbe8f5;margin-right:3px}
+.eggcurrent{font-weight:900;color:#55ff3b;margin-left:5px}
+.eggbtn{
+  min-width:62px;
+  padding:8px 9px;
+  border-radius:8px;
+  border:1px solid #3a4656;
+  background:#0d1219;
+  color:#fff;
+  font-weight:1000;
+}
+.eggbtn.active{
+  background:#fff;
+  color:#0a0d12;
+  border-color:#fff;
+}
+
+
 .notice{margin-top:16px;background:#10151c;border:1px solid #2b3440;border-radius:12px;padding:12px;color:#b8c3cf;font-size:13px;line-height:1.55}
 @media(max-width:800px){.grid{grid-template-columns:1fr}.muts{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head><body><main>
-<h1>🥚 Steal An Egg Control V5.27 — FIXED</h1>
+<h1>🥚 Steal An Egg Control V5.28 — FIXED</h1>
 <div class="sub"><span class="syncstatus" id="syncStatus">● Đang kiểm tra D1...</span> 
 Weight nhập <b>1–1000</b>. <b>Weight 1 = đúng tiền gốc</b>; tăng Weight thì tự nhân theo đường cong size.
 Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Đồng bộ qua Cloudflare D1, không dùng Cache API. Weight/Mutation/Bật-Tắt/x2–x10 cập nhật chung một state; x1 không hiện nhãn, Luminous Eggs không có nhãn số lượng.
@@ -238,10 +257,24 @@ Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Đồng
 </section>
 <section class="pet" data-id="luminous_eggs">
   <div class="head">
-    <div><strong>Luminous Eggs</strong><div class="base">Giữ nguyên X100</div></div>
+    <div><strong>Luminous Eggs</strong><div class="base">Đổi chữ X100 → X1000</div></div>
     <button class="toggle on">ĐANG BẬT</button>
   </div>
-  <div class="static">Không thay đổi tiền / chữ của thẻ này.</div>
+  <div class="eggmultline" data-eggmultline>
+    <span class="eggtitle">Số trứng</span>
+    <span class="eggcurrent" data-eggcurrent>Đang hiện X100</span>
+    <button type="button" class="eggbtn" data-egg="100">X100</button>
+    <button type="button" class="eggbtn" data-egg="200">X200</button>
+    <button type="button" class="eggbtn" data-egg="300">X300</button>
+    <button type="button" class="eggbtn" data-egg="400">X400</button>
+    <button type="button" class="eggbtn" data-egg="500">X500</button>
+    <button type="button" class="eggbtn" data-egg="600">X600</button>
+    <button type="button" class="eggbtn" data-egg="700">X700</button>
+    <button type="button" class="eggbtn" data-egg="800">X800</button>
+    <button type="button" class="eggbtn" data-egg="900">X900</button>
+    <button type="button" class="eggbtn" data-egg="1000">X1000</button>
+  </div>
+  <div class="static">Chỉ đổi chữ X trên thẻ Luminous Eggs. Không đổi tiền.</div>
 </section>
 <section class="pet" data-id="cthulhu">
   <div class="head">
@@ -338,6 +371,12 @@ function render(){
   const s=state.cards[c.id];
   sec.classList.toggle("off",!s.enabled);
   const b=sec.querySelector(".toggle");b.textContent=s.enabled?"ĐANG BẬT":"ĐANG TẮT";
+  if(c.id==="luminous_eggs"){
+    const m=Math.max(100,Math.min(1000,Math.round(Number(s.eggMult)||100)));
+    sec.querySelectorAll(".eggbtn").forEach(btn=>btn.classList.toggle("active",Number(btn.dataset.egg)===m));
+    const ec=sec.querySelector("[data-eggcurrent]");
+    if(ec)ec.textContent=`Đang hiện X${m}`;
+  }
   if(c.dynamic){
    const wi=sec.querySelector('input[type=number]');if(document.activeElement!==wi)wi.value=s.weight;
    sec.querySelectorAll('.muts input').forEach(cb=>cb.checked=(s.mutations||[]).includes(cb.value));
@@ -402,7 +441,10 @@ function applyRemoteToControl(obj){
      enabled:obj.cards[c.id].enabled!==false,
      weight:clampWeight(obj.cards[c.id].weight),
      mutations:Array.isArray(obj.cards[c.id].mutations)?obj.cards[c.id].mutations:[],
-     qty:Math.max(1,Math.min(10,Math.round(Number(obj.cards[c.id].qty)||1)))
+     qty:Math.max(1,Math.min(10,Math.round(Number(obj.cards[c.id].qty)||1))),
+     eggMult:c.id==="luminous_eggs"
+       ? Math.max(100,Math.min(1000,Math.round(Number(obj.cards[c.id].eggMult)||state.cards[c.id].eggMult||100)))
+       : state.cards[c.id].eggMult
    };
  }
  if(obj.version)state.version=obj.version;
@@ -454,6 +496,12 @@ async function loadD1State(){
 document.querySelectorAll(".pet").forEach(sec=>{
  const id=sec.dataset.id,c=CFG.cards.find(x=>x.id===id);
  sec.querySelector(".toggle").onclick=()=>{state.cards[id].enabled=!state.cards[id].enabled;saveAndPublish()};
+ if(id==="luminous_eggs"){
+   sec.querySelectorAll(".eggbtn").forEach(btn=>btn.addEventListener("click",()=>{
+     state.cards[id].eggMult=Math.max(100,Math.min(1000,Math.round(Number(btn.dataset.egg)||100)));
+     saveAndPublish();
+   }));
+ }
  if(c?.dynamic){
    const wi=sec.querySelector('input[type=number]');
    wi.addEventListener("input",()=>{
@@ -479,9 +527,9 @@ document.querySelectorAll(".pet").forEach(sec=>{
 });
 allOn.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=true;saveAndPublish()};
 allOff.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=false;saveAndPublish()};
-reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[];state.cards[c.id].qty=1}saveAndPublish()};
+reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[];state.cards[c.id].qty=1;if(c.id==="luminous_eggs")state.cards[c.id].eggMult=100}saveAndPublish()};
 copyLink.onclick=async()=>{
- const u=new URL("index.html?v=527",location.href).href;
+ const u=new URL("index.html?v=528",location.href).href;
  try{await navigator.clipboard.writeText(u);copyLink.textContent="ĐÃ COPY";setTimeout(()=>copyLink.textContent="Copy Overlay Link",1200)}
  catch(_e){prompt("Copy link Overlay:",u)}
 };

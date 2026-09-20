@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.27 USER NO PRICE CARDS</title>
+<title>Steal An Egg Overlay V5.28 EGGS MULTIPLIER</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -144,6 +144,43 @@ body{font-family:Arial,Helvetica,sans-serif}
   50%  { background-position:100% 50%; }
   100% { background-position:0% 50%; }
 }
+
+/* Luminous Eggs: đổi X100/X200...X1000 bằng text tự tạo.
+   Chỉ phủ đúng dòng X100 trên thẻ trứng, không đụng pet/card khác. */
+.egg-mult-cover{
+  position:absolute;
+  left:14.5%;
+  right:14.5%;
+  top:6.0%;
+  height:15.2%;
+  z-index:30;
+  border-radius:9px;
+  pointer-events:none;
+  background:linear-gradient(180deg,#074688 0%,#06346d 100%);
+}
+.egg-mult-text{
+  position:absolute;
+  left:5%;
+  right:5%;
+  top:5.0%;
+  height:16.5%;
+  z-index:31;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
+  font-weight:1000;
+  font-size:16.2cqw;
+  line-height:.9;
+  letter-spacing:-.04em;
+  color:#ffd719;
+  -webkit-text-stroke:.72cqw #050505;
+  paint-order:stroke fill;
+  text-shadow:0 .22cqw 0 #000;
+  transform-origin:center center;
+}
+
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
 .price-cover{display:none!important;}
 .price-text{
@@ -338,6 +375,8 @@ body{font-family:Arial,Helvetica,sans-serif}
     <div class="slot" data-card="luminous_eggs">
       <div class="card3d">
         <img class="card-img" src="cards/luminous_eggs.png" alt="Luminous Eggs" draggable="false">
+        <div class="egg-mult-cover" aria-hidden="true"></div>
+        <div class="egg-mult-text" data-eggmult>X100</div>
         
       </div>
     </div>
@@ -371,7 +410,7 @@ body{font-family:Arial,Helvetica,sans-serif}
 <script>
 const CFG=window.SAE_CONFIG;
 const defaults={version:CFG.version,cards:{}};
-for(const c of CFG.cards) defaults.cards[c.id]={enabled:true,weight:1,mutations:[],qty:1};
+for(const c of CFG.cards) defaults.cards[c.id]={enabled:true,weight:1,mutations:[],qty:1,eggMult:c.id==="luminous_eggs"?100:undefined};
 let state=structuredClone(defaults);
 let newestStateTime=0;
 const SHARED_KEY="sae-live-state-v3";
@@ -450,6 +489,11 @@ function render(){
     const el=document.querySelector(`[data-card="${c.id}"]`);
     const s=state.cards[c.id]||defaults.cards[c.id];
     el.classList.toggle("is-hidden",!s.enabled);
+    if(c.id==="luminous_eggs"){
+      const m=Math.max(100,Math.min(1000,Math.round(Number(s.eggMult)||100)));
+      const t=el.querySelector("[data-eggmult]");
+      if(t)t.textContent=`X${m}`;
+    }
     if(c.dynamic){
       const val=c.base*sizeFactor(s.weight)*mutationFactor(s.mutations);
       const p=el.querySelector("[data-price]");
@@ -486,7 +530,10 @@ function applyIncoming(obj){
         mutations:forceBase13 ? [] :
           (Array.isArray(obj.cards[c.id].mutations)?obj.cards[c.id].mutations:[]),
         qty:(obj.cards[c.id].qty==null ? (state.cards[c.id].qty||1) :
-          Math.max(1,Math.min(10,Math.round(Number(obj.cards[c.id].qty)||1))))
+          Math.max(1,Math.min(10,Math.round(Number(obj.cards[c.id].qty)||1)))),
+        eggMult:c.id==="luminous_eggs"
+          ? Math.max(100,Math.min(1000,Math.round(Number(obj.cards[c.id].eggMult)||state.cards[c.id].eggMult||100)))
+          : state.cards[c.id].eggMult
       };
     }
   }
