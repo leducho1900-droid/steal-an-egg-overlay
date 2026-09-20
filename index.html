@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.40 ADMIN LOGIN UNIFIED</title>
+<title>Steal An Egg Overlay V5.41 ADMIN LOGIN UNIFIED</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -53,7 +53,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   backface-visibility:hidden;
 }
 
-/* V5.7 — PET đứng yên 100%.
+/* V5.41 — PET đứng yên 100%.
    CHỈ hiệu ứng bảy màu thu vào 4 giây rồi bung ra 3 giây. */
 .pet-hole{display:none!important;}
 .pet-fx-group{
@@ -452,7 +452,7 @@ try{bc=new BroadcastChannel("sae-overlay-v3")}catch(_e){}
 
 function clampWeight(v){
   v=Number(v);
-  if(!Number.isFinite(v)) v=1;
+  if(!Number.isFinite(v)) v=541;
   return Math.max(1,Math.min(1000,v));
 }
 
@@ -579,12 +579,12 @@ function applyIncoming(obj){
   render();
 }
 
-/* V5.1: Cloudflare D1 + long-poll.
+/* V5.41: Cloudflare D1 + long-poll.
    Không dùng Cache API nên không còn state khác nhau giữa các data center. */
 const API=(CFG.backend||"https://steal-an-egg-overlay-backend.leducho1900.workers.dev").replace(/\/+$/,"");
 const URL_PARAMS=new URLSearchParams(location.search);
 const ROOM=URL_PARAMS.get("room")||CFG.room||"";
-let cloudRev=0;
+let cloudRev=541;
 let waitBusy=false;
 
 async function loadInitialState(){
