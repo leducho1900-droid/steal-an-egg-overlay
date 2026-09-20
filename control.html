@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Control V5.55</title>
+<title>Steal An Egg Control V5.57</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -78,15 +78,40 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:poin
 
 .notice{margin-top:16px;background:#10151c;border:1px solid #2b3440;border-radius:12px;padding:12px;color:#b8c3cf;font-size:13px;line-height:1.55}
 @media(max-width:800px){.grid{grid-template-columns:1fr}.muts{grid-template-columns:repeat(2,1fr)}}
+
+
+.updategate{
+  position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.78);padding:18px;
+}
+.updatebox{
+  width:min(520px,96vw);border:1px solid #35506a;border-radius:18px;background:#101722;
+  box-shadow:0 18px 80px rgba(0,0,0,.6);padding:20px;color:#fff;text-align:center;
+}
+.updatebox h2{margin:0 0 8px;font-size:24px}.updatebox p{color:#cbd7e5;line-height:1.45;margin:8px 0 16px}
+.updatebuttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.updatebuttons button{min-width:150px}
+.updateLater{background:#263241;color:#fff}.updateDownload{background:#7f55ff;color:#fff}.updateVersion{color:#82ff91;font-weight:900}
+
 </style>
 
-<link rel="icon" href="favicon.ico?v=555norainbow" sizes="any">
-<link rel="shortcut icon" href="favicon.ico?v=555norainbow">
-<link rel="apple-touch-icon" href="assets/avatar_icon.png?v=555norainbow">
-<link rel="manifest" href="manifest.webmanifest?v=555norainbow">
+<link rel="icon" href="favicon.ico?v=557autoupdate" sizes="any">
+<link rel="shortcut icon" href="favicon.ico?v=557autoupdate">
+<link rel="apple-touch-icon" href="assets/avatar_icon.png?v=557autoupdate">
+<link rel="manifest" href="manifest.webmanifest?v=557autoupdate">
 <meta name="theme-color" content="#0b0d11">
-</head><body><main>
-<h1>🥚 Steal An Egg Control V5.55</h1>
+</head><body><div id="updateGate" class="updategate">
+  <div class="updatebox">
+    <h2>🔄 Có bản cập nhật mới</h2>
+    <p id="updateMsg">App có bản mới. Bấm cập nhật để tải lại bản mới nhất.</p>
+    <div class="updateVersion" id="updateVersionText"></div>
+    <div class="updatebuttons">
+      <button id="updateRefresh" class="green">Cập nhật ngay</button>
+      <button id="updateDownload" class="updateDownload" style="display:none">Tải bản cài mới</button>
+      <button id="updateLater" class="updateLater">Để sau</button>
+    </div>
+  </div>
+</div><main>
+<h1>🥚 Steal An Egg Control V5.57</h1>
 <div class="actions">
 <button id="allOn" class="green">Bật tất cả</button>
 <button id="allOff" class="red">Tắt tất cả</button>
@@ -495,7 +520,7 @@ async function authKeyIfNeeded(){
  if(!USER_KEY){
    const u=new URL("login.html",location.href);
    u.searchParams.set("v","537");
-   u.searchParams.set("next","control.html?v=555norainbow");
+   u.searchParams.set("next","control.html?v=557autoupdate");
    location.href=u.href;
    return false;
  }
@@ -524,7 +549,7 @@ async function authKeyIfNeeded(){
    localStorage.removeItem("sae_user_room");
    const u=new URL("login.html",location.href);
    u.searchParams.set("v","537");
-   u.searchParams.set("next","control.html?v=555norainbow");
+   u.searchParams.set("next","control.html?v=557autoupdate");
    location.href=u.href;
    return false;
  }
@@ -591,7 +616,7 @@ allOn.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=true;saveA
 allOff.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=false;saveAndPublish()};
 reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[];state.cards[c.id].qty=1;if(c.id==="luminous_eggs")state.cards[c.id].eggMult=100}saveAndPublish()};
 copyLink.onclick=async()=>{
- const uObj=new URL("index.html?v=555norainbow",location.href);
+ const uObj=new URL("index.html?v=557autoupdate",location.href);
  if(ROOM)uObj.searchParams.set("room",ROOM);
  uObj.searchParams.set("h","1400");
  const u=uObj.href;
@@ -600,7 +625,7 @@ copyLink.onclick=async()=>{
 };
 
 avatarPage.onclick=()=>{
- const u=new URL("avatar.html?v=555norainbow",location.href);
+ const u=new URL("avatar.html?v=557autoupdate",location.href);
  if(USER_KEY)u.searchParams.set("key",USER_KEY);
  if(ROOM)u.searchParams.set("room",ROOM);
  location.href=u.href;
@@ -621,9 +646,46 @@ logoutBtn.onclick=()=>{
  }
  const u=new URL("login.html",location.href);
  u.searchParams.set("v","550app");
- u.searchParams.set("next","control.html?v=555norainbow");
+ u.searchParams.set("next","control.html?v=557autoupdate");
  location.replace(u.href);
 };
+
+
+const APP_WEB_VERSION="5.57";
+const APP_WEB_CODE=557;
+async function checkAppUpdate(){
+  try{
+    const r=await fetch("version.json?_="+Date.now(),{cache:"no-store"});
+    if(!r.ok)return;
+    const info=await r.json();
+    const remoteCode=Number(info.versionCode||0);
+    if(!remoteCode||remoteCode<=APP_WEB_CODE)return;
+    const gate=document.getElementById("updateGate");
+    const msg=document.getElementById("updateMsg");
+    const ver=document.getElementById("updateVersionText");
+    const refresh=document.getElementById("updateRefresh");
+    const later=document.getElementById("updateLater");
+    const dl=document.getElementById("updateDownload");
+    if(!gate)return;
+    msg.textContent=info.message||"Có bản mới. Bấm cập nhật để tải lại bản mới nhất.";
+    ver.textContent="Bản đang dùng: V"+APP_WEB_VERSION+"  →  Bản mới: "+(info.version||remoteCode);
+    gate.style.display="flex";
+    if(info.force){later.style.display="none";} else {later.style.display="inline-block";later.onclick=()=>gate.style.display="none";}
+    refresh.onclick=()=>{
+      const u=new URL(location.href);
+      u.searchParams.set("v", info.cacheTag||String(remoteCode));
+      u.searchParams.set("_", Date.now());
+      location.replace(u.href);
+    };
+    if(info.downloadUrl){
+      dl.style.display="inline-block";
+      dl.onclick=()=>{location.href=info.downloadUrl;};
+    }else{
+      dl.style.display="none";
+    }
+  }catch(_e){}
+}
+checkAppUpdate();
 
 render();
 authKeyIfNeeded().then(ok=>{if(ok)loadState()});

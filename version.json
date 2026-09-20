@@ -1,0 +1,9 @@
+{
+  "version": "5.57",
+  "versionCode": 557,
+  "name": "V5.57 AUTO UPDATE",
+  "cacheTag": "557autoupdate",
+  "force": false,
+  "message": "Bạn đang dùng bản mới nhất. File này dùng để các bản sau hiện thông báo cập nhật.",
+  "downloadUrl": ""
+}

@@ -22,10 +22,10 @@ input[type=text]{background:#090c10;color:#fff;border:1px solid #3b4552;border-r
 #file{display:none}.status{color:#9db0c4;margin-top:8px}
 </style>
 
-<link rel="icon" href="favicon.ico?v=555norainbow" sizes="any">
-<link rel="shortcut icon" href="favicon.ico?v=555norainbow">
-<link rel="apple-touch-icon" href="assets/avatar_icon.png?v=555norainbow">
-<link rel="manifest" href="manifest.webmanifest?v=555norainbow">
+<link rel="icon" href="favicon.ico?v=557autoupdate" sizes="any">
+<link rel="shortcut icon" href="favicon.ico?v=557autoupdate">
+<link rel="apple-touch-icon" href="assets/avatar_icon.png?v=557autoupdate">
+<link rel="manifest" href="manifest.webmanifest?v=557autoupdate">
 <meta name="theme-color" content="#0b0d11">
 </head>
 <body>
@@ -37,7 +37,7 @@ input[type=text]{background:#090c10;color:#fff;border:1px solid #3b4552;border-r
   <div class="row">
     <input id="keyInput" type="text" placeholder="Nhập key nếu link chưa có key">
     <button id="loginBtn" class="green">Đăng nhập key</button>
-    <a id="controlBack" class="btn dark" href="control.html?v=555norainbow">Quay lại Control</a>
+    <a id="controlBack" class="btn dark" href="control.html?v=557autoupdate">Quay lại Control</a>
   </div>
   <div id="status" class="status">Đang chờ key...</div>
 </div>
@@ -71,7 +71,7 @@ keyInput.value=USER_KEY;
 if(!USER_KEY){
  const u=new URL("login.html",location.href);
  u.searchParams.set("v","537");
- u.searchParams.set("next","avatar.html?v=555norainbow");
+ u.searchParams.set("next","avatar.html?v=557autoupdate");
  location.href=u.href;
 }
 let avatarData="";
