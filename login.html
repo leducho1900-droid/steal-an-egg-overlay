@@ -2,15 +2,14 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Đăng nhập Key V5.37</title>
+<title>Đăng nhập Key V5.38</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#07090d;color:#fff;font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center}
 main{width:min(560px,94vw);background:#111820;border:1px solid #2b3542;border-radius:22px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
 h1{font-size:32px;margin:0 0 8px}.sub{color:#aab7c6;line-height:1.45;margin:0 0 18px}
 input{width:100%;padding:14px;border-radius:12px;border:1px solid #3b4552;background:#070a0f;color:#fff;font-weight:1000;font-size:16px;text-transform:uppercase}
-button,a{border:0;border-radius:12px;padding:13px 16px;font-weight:1000;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;color:#fff;background:#1a9cff;margin-top:12px}
-.green{background:#35e35e;color:#061008}.dark{background:#222b38}.row{display:flex;gap:10px;flex-wrap:wrap}.row button,.row a{flex:1}
+button{width:100%;border:0;border-radius:12px;padding:14px 16px;font-weight:1000;cursor:pointer;color:#061008;background:#35e35e;margin-top:12px;font-size:16px}
 #status{margin-top:12px;color:#aab7c6;font-weight:900}
 small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
 </style>
@@ -19,19 +18,16 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
 <main>
 <h1>🔑 Nhập key để vào web</h1>
 <p class="sub">Mỗi người dùng 1 key. Key sẽ tự khóa vào máy này sau lần đăng nhập đầu tiên.</p>
-<input id="keyInput" placeholder="Nhập key người dùng">
-<div class="row">
-  <button id="loginBtn" class="green">Đăng nhập</button>
-  <a class="dark" href="admin.html?v=537">Admin tạo key</a>
-</div>
+<input id="keyInput" placeholder="NHẬP KEY">
+<button id="loginBtn">Đăng nhập</button>
 <div id="status">Chưa đăng nhập.</div>
-<small>Người dùng chỉ dùng key thường để vào Control / Avatar. Phần tạo key chỉ mở bằng Admin Key.</small>
+<small>Nhập sai sẽ báo sai key. Nhập đúng sẽ tự vào Control.</small>
 </main>
 <script>
 const CFG=window.SAE_CONFIG;
 const API=(CFG.backend||"").replace(/\/+$/,"");
 const URLP=new URLSearchParams(location.search);
-const NEXT=URLP.get("next")||"home.html?v=537";
+const NEXT=URLP.get("next")||"control.html?v=538";
 const DEVICE_STORE="sae_device_id_v1";
 let DEVICE_ID=localStorage.getItem(DEVICE_STORE);
 if(!DEVICE_ID){
@@ -54,15 +50,15 @@ async function login(){
   if(!r.ok||!data.ok)throw new Error(data.error||"auth_failed");
   localStorage.setItem("sae_user_key",key);
   localStorage.setItem("sae_user_room",data.room);
-  setStatus("Key OK, đang vào web...","#55ff78");
+  setStatus("Đăng nhập xong, đang vào Control...","#55ff78");
   const u=new URL(NEXT,location.href);
   u.searchParams.set("key",key);
-  if(data.room)u.searchParams.set("room",data.room);
-  location.href=u.href;
+  u.searchParams.set("room",data.room);
+  setTimeout(()=>{location.href=u.href},450);
  }catch(e){
   localStorage.removeItem("sae_user_key");
   localStorage.removeItem("sae_user_room");
-  setStatus("Key lỗi / hết hạn / đã khóa ở máy khác","#ff6b6b");
+  setStatus("Sai key / key hết hạn / key đã bị xóa / key đã khóa ở máy khác","#ff6b6b");
  }
 }
 loginBtn.onclick=login;

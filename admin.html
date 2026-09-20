@@ -2,59 +2,58 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin tạo key V5.37</title>
+<title>Admin tạo key V5.38</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
-main{max-width:1050px;margin:auto;padding:22px}
+main{max-width:1080px;margin:auto;padding:22px}
 h1{margin:0 0 8px;font-size:30px}.sub{color:#aab3c0;line-height:1.45;margin:0 0 18px}
 .card{border:1px solid #2a3039;background:#151922;border-radius:16px;padding:16px;margin:12px 0}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
 input{background:#090c10;color:#fff;border:1px solid #3b4552;border-radius:10px;padding:11px;font-weight:900;min-width:280px;flex:1}
-button,a.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:1000;cursor:pointer;text-decoration:none;display:inline-flex;color:#fff;background:#1a9cff}
+button,a.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:1000;cursor:pointer;text-decoration:none;display:inline-flex;color:#fff;background:#1a9cff}
 .green{background:#33e35d!important;color:#061008!important}.orange{background:#ffb020!important;color:#1a0d00!important}.red{background:#ff4f4f!important}.dark{background:#222b38!important}
-pre{white-space:pre-wrap;word-break:break-word;background:#070a0f;border:1px solid #263241;border-radius:12px;padding:14px;color:#d8f7ff}
-label{color:#c8d3df;font-weight:900}small{color:#9aa8b8}.hidden{display:none!important}
-#adminStatus{font-weight:900;margin-top:8px;color:#ffd75a}
+.hidden{display:none!important}#adminStatus,#status{font-weight:900;margin-top:8px;color:#ffd75a}
+.keybox{background:#070a0f;border:1px solid #263241;border-radius:12px;padding:12px;margin-top:10px;display:grid;gap:8px}
+.keyline{display:grid;grid-template-columns:1.2fr .8fr .8fr auto auto;gap:8px;align-items:center;border-top:1px solid #273241;padding-top:10px}
+.keyline:first-child{border-top:0;padding-top:0}
+.bad{color:#ff7070;font-weight:1000}.ok{color:#55ff78;font-weight:1000}.wait{color:#ffd75a;font-weight:1000}
+small{color:#9aa8b8}.mono{font-family:Consolas,monospace;word-break:break-all}
+@media(max-width:800px){.keyline{grid-template-columns:1fr}.row button{flex:1}}
 </style>
 </head>
 <body>
 <main>
 <h1>🔐 Admin tạo key</h1>
-<p class="sub">Trang này chỉ mở bằng <b>Admin Key</b>. Key người dùng không vào được phần tạo key.</p>
+<p class="sub">Chỉ ADMIN_KEY mới mở được trang này. Key người dùng không tạo/xóa key được.</p>
 
 <div id="adminLogin" class="card">
-  <label>Admin Key</label>
   <div class="row">
     <input id="adminKey" type="password" placeholder="Nhập ADMIN_KEY">
-    <button id="openAdmin" class="green">Mở Admin</button>
-    <a class="btn dark" href="login.html?v=537">Trang đăng nhập người dùng</a>
+    <button id="openAdmin" class="green">Đăng nhập Admin</button>
+    <a class="btn dark" href="login.html?v=538">Về đăng nhập người dùng</a>
   </div>
   <div id="adminStatus">Chưa xác thực Admin Key.</div>
-  <small>Admin Key là secret <b>ADMIN_KEY</b> trong Cloudflare Worker.</small>
 </div>
 
 <div id="adminArea" class="hidden">
   <div class="card">
-    <h2>Tạo key mới cho người dùng</h2>
+    <h2>Tạo key người dùng</h2>
     <div class="row">
-      <button id="perm" class="green">Tạo key vĩnh viễn</button>
-      <button id="d7" class="orange">Tạo key 7 ngày</button>
-      <button id="h24" class="orange">Tạo key 24 giờ</button>
+      <button id="perm" class="green">Key vĩnh viễn</button>
+      <button id="d7" class="orange">Key 7 ngày</button>
+      <button id="h24" class="orange">Key 24 giờ</button>
     </div>
+    <div id="status">Chưa tạo key.</div>
+    <div id="latest" class="keybox hidden"></div>
   </div>
 
   <div class="card">
-    <h2>Kết quả</h2>
-    <div id="status">Chưa tạo key.</div>
-    <pre id="out"></pre>
+    <h2>Danh sách key / trạng thái kích hoạt</h2>
     <div class="row">
-      <button id="copyKey">Copy Key</button>
-      <button id="copyControl">Copy Control Link</button>
-      <button id="copyOverlay">Copy Overlay Link</button>
-      <button id="copyAvatar">Copy Avatar Setup Link</button>
-      <button id="copyLogin">Copy Login Link</button>
+      <button id="refresh" class="blue">Tải lại danh sách</button>
     </div>
+    <div id="list" class="keybox">Chưa tải.</div>
   </div>
 </div>
 </main>
@@ -63,14 +62,18 @@ label{color:#c8d3df;font-weight:900}small{color:#9aa8b8}.hidden{display:none!imp
 const CFG=window.SAE_CONFIG;
 const API=(CFG.backend||"").replace(/\/+$/,"");
 adminKey.value=localStorage.getItem("sae_admin_key")||"";
-let last=null;
-let verified=false;
+let verified=false,last=null;
 
-function makeLink(file, params={}){
- const u=new URL(file,location.href);
- for(const [k,v] of Object.entries(params))if(v!=null&&v!=="")u.searchParams.set(k,v);
- return u.href;
+function fmtExp(x){return x?new Date(x).toLocaleString():"Vĩnh viễn"}
+function keyStatus(k){
+ if(k.revoked)return '<span class="bad">Đã xóa</span>';
+ if(k.expired)return '<span class="bad">Hết hạn</span>';
+ if(k.activated)return '<span class="ok">Đã kích hoạt</span>';
+ return '<span class="wait">Chưa kích hoạt</span>';
 }
+function machineCount(k){return k.activated?1:0}
+function makeLogin(k){const u=new URL("login.html",location.href);u.searchParams.set("v","538");u.searchParams.set("key",k);u.searchParams.set("next","control.html?v=538");return u.href}
+async function clip(t){await navigator.clipboard.writeText(t)}
 async function checkAdmin(){
  const ak=adminKey.value.trim();
  if(!ak){adminStatus.textContent="Nhập Admin Key trước";adminStatus.style.color="#ff6b6b";return false}
@@ -87,42 +90,30 @@ async function checkAdmin(){
   localStorage.setItem("sae_admin_key",ak);
   verified=true;
   adminArea.classList.remove("hidden");
-  adminStatus.textContent="Admin Key OK. Đã mở phần tạo key.";
+  adminStatus.textContent="Admin Key OK.";
   adminStatus.style.color="#55ff78";
+  await loadKeys();
   return true;
  }catch(e){
-  verified=false;
-  adminArea.classList.add("hidden");
-  adminStatus.textContent="Admin Key sai. Không được tạo key.";
+  verified=false;adminArea.classList.add("hidden");
+  adminStatus.textContent="Admin Key sai. Không được vào phần tạo key.";
   adminStatus.style.color="#ff6b6b";
   return false;
  }
 }
 openAdmin.onclick=checkAdmin;
 
-function show(data){
+function showLatest(data){
  last=data;
- const exp=data.expiresAt?new Date(data.expiresAt).toLocaleString():"Vĩnh viễn";
- const login=makeLink("login.html",{v:"537",key:data.key,next:"home.html?v=537"});
- const control=makeLink("control.html",{v:"537",key:data.key,room:data.room});
- const overlay=makeLink("index.html",{v:"537",room:data.room});
- const avatar=makeLink("avatar.html",{v:"537",key:data.key,room:data.room});
- out.textContent=`KEY: ${data.key}
-ROOM: ${data.room}
-Hạn: ${exp}
-
-LOGIN LINK:
-${login}
-
-CONTROL LINK:
-${control}
-
-OVERLAY LINK:
-${overlay}
-
-AVATAR SETUP LINK:
-${avatar}`;
- status.textContent="Đã tạo key thành công.";
+ latest.classList.remove("hidden");
+ latest.innerHTML = `
+  <div><b>Key mới:</b> <span class="mono">${data.key}</span></div>
+  <div><b>Thời hạn:</b> ${fmtExp(data.expiresAt)}</div>
+  <div><b>Trạng thái:</b> <span class="wait">Chưa kích hoạt</span> · <b>Số máy:</b> 0</div>
+  <div class="row">
+    <button onclick="navigator.clipboard.writeText('${data.key}')">Sao chép key</button>
+    <button onclick="navigator.clipboard.writeText('${makeLogin(data.key)}')">Sao chép link đăng nhập</button>
+  </div>`;
 }
 async function createKey(ttl){
  if(!verified){const ok=await checkAdmin();if(!ok)return}
@@ -134,21 +125,48 @@ async function createKey(ttl){
   body:JSON.stringify({adminKey:ak,ttl})
  });
  const data=await r.json().catch(()=>({}));
- if(!r.ok||!data.ok){
-  status.textContent="Lỗi tạo key.";
-  out.textContent=JSON.stringify(data,null,2);
-  return;
- }
- show(data);
+ if(!r.ok||!data.ok){status.textContent="Lỗi tạo key.";latest.classList.remove("hidden");latest.textContent=JSON.stringify(data,null,2);return}
+ status.textContent="Đã tạo key.";
+ showLatest(data);
+ await loadKeys();
 }
 perm.onclick=()=>createKey("permanent");
 d7.onclick=()=>createKey("7d");
 h24.onclick=()=>createKey("24h");
-copyKey.onclick=()=>last&&navigator.clipboard.writeText(last.key);
-copyControl.onclick=()=>last&&navigator.clipboard.writeText(makeLink("control.html",{v:"537",key:last.key,room:last.room}));
-copyOverlay.onclick=()=>last&&navigator.clipboard.writeText(makeLink("index.html",{v:"537",room:last.room}));
-copyAvatar.onclick=()=>last&&navigator.clipboard.writeText(makeLink("avatar.html",{v:"537",key:last.key,room:last.room}));
-copyLogin.onclick=()=>last&&navigator.clipboard.writeText(makeLink("login.html",{v:"537",key:last.key,next:"home.html?v=537"}));
+refresh.onclick=()=>loadKeys();
+
+async function loadKeys(){
+ const ak=adminKey.value.trim();
+ const r=await fetch(`${API}/admin/list-keys`,{
+  method:"POST",mode:"cors",cache:"no-store",
+  headers:{"Content-Type":"application/json","Cache-Control":"no-cache"},
+  body:JSON.stringify({adminKey:ak})
+ });
+ const data=await r.json().catch(()=>({}));
+ if(!r.ok||!data.ok){list.textContent="Không tải được danh sách key.";return}
+ if(!data.keys.length){list.textContent="Chưa có key nào.";return}
+ list.innerHTML=data.keys.map(k=>`
+   <div class="keyline">
+     <div><b class="mono">${k.key}</b><br><small>${k.room}</small></div>
+     <div>Hạn: <b>${fmtExp(k.expiresAt)}</b></div>
+     <div>${keyStatus(k)}<br><small>Số máy: ${machineCount(k)}</small></div>
+     <button onclick="navigator.clipboard.writeText('${k.key}')">Sao chép key</button>
+     <button class="red" onclick="deleteKey('${k.key}')">Xóa key</button>
+   </div>
+ `).join("");
+}
+async function deleteKey(k){
+ if(!confirm("Xóa key này? Người dùng sẽ bị văng ra đăng nhập và không dùng được nữa."))return;
+ const ak=adminKey.value.trim();
+ const r=await fetch(`${API}/admin/delete-key`,{
+  method:"POST",mode:"cors",cache:"no-store",
+  headers:{"Content-Type":"application/json","Cache-Control":"no-cache"},
+  body:JSON.stringify({adminKey:ak,key:k})
+ });
+ const data=await r.json().catch(()=>({}));
+ if(!r.ok||!data.ok){alert("Xóa key lỗi");return}
+ await loadKeys();
+}
 </script>
 </body>
 </html>
