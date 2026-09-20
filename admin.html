@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin tạo key V5.38</title>
+<title>Admin tạo key V5.39</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -31,7 +31,7 @@ small{color:#9aa8b8}.mono{font-family:Consolas,monospace;word-break:break-all}
   <div class="row">
     <input id="adminKey" type="password" placeholder="Nhập ADMIN_KEY">
     <button id="openAdmin" class="green">Đăng nhập Admin</button>
-    <a class="btn dark" href="login.html?v=538">Về đăng nhập người dùng</a>
+    <a class="btn dark" href="login.html?v=539">Về đăng nhập người dùng</a>
   </div>
   <div id="adminStatus">Chưa xác thực Admin Key.</div>
 </div>
@@ -59,8 +59,8 @@ small{color:#9aa8b8}.mono{font-family:Consolas,monospace;word-break:break-all}
 </main>
 
 <script>
-const CFG=window.SAE_CONFIG;
-const API=(CFG.backend||"").replace(/\/+$/,"");
+const CFG=window.SAE_CONFIG||{};
+const API=(CFG.backend||"https://steal-an-egg-overlay-backend.leducho1900.workers.dev").replace(/\/+$/,"");
 adminKey.value=localStorage.getItem("sae_admin_key")||"";
 let verified=false,last=null;
 
@@ -72,7 +72,7 @@ function keyStatus(k){
  return '<span class="wait">Chưa kích hoạt</span>';
 }
 function machineCount(k){return k.activated?1:0}
-function makeLogin(k){const u=new URL("login.html",location.href);u.searchParams.set("v","538");u.searchParams.set("key",k);u.searchParams.set("next","control.html?v=538");return u.href}
+function makeLogin(k){const u=new URL("login.html",location.href);u.searchParams.set("v","538");u.searchParams.set("key",k);u.searchParams.set("next","control.html?v=539");return u.href}
 async function clip(t){await navigator.clipboard.writeText(t)}
 async function checkAdmin(){
  const ak=adminKey.value.trim();
