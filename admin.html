@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin tạo key V5.39</title>
+<title>Admin tạo key V5.40</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -15,23 +15,24 @@ button,a.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:1000;curs
 .green{background:#33e35d!important;color:#061008!important}.orange{background:#ffb020!important;color:#1a0d00!important}.red{background:#ff4f4f!important}.dark{background:#222b38!important}
 .hidden{display:none!important}#adminStatus,#status{font-weight:900;margin-top:8px;color:#ffd75a}
 .keybox{background:#070a0f;border:1px solid #263241;border-radius:12px;padding:12px;margin-top:10px;display:grid;gap:8px}
-.keyline{display:grid;grid-template-columns:1.2fr .8fr .8fr auto auto;gap:8px;align-items:center;border-top:1px solid #273241;padding-top:10px}
+.keyline{display:grid;grid-template-columns:1.25fr .8fr .75fr auto auto;gap:8px;align-items:center;border-top:1px solid #273241;padding-top:10px}
 .keyline:first-child{border-top:0;padding-top:0}
 .bad{color:#ff7070;font-weight:1000}.ok{color:#55ff78;font-weight:1000}.wait{color:#ffd75a;font-weight:1000}
 small{color:#9aa8b8}.mono{font-family:Consolas,monospace;word-break:break-all}
+.latestKey{font-size:18px;color:#d8f7ff}
 @media(max-width:800px){.keyline{grid-template-columns:1fr}.row button{flex:1}}
 </style>
 </head>
 <body>
 <main>
 <h1>🔐 Admin tạo key</h1>
-<p class="sub">Chỉ ADMIN_KEY mới mở được trang này. Key người dùng không tạo/xóa key được.</p>
+<p class="sub">Chỉ key chủ Admin mới mở được phần tạo key. Key thường sẽ không vào được trang này.</p>
 
 <div id="adminLogin" class="card">
   <div class="row">
     <input id="adminKey" type="password" placeholder="Nhập ADMIN_KEY">
     <button id="openAdmin" class="green">Đăng nhập Admin</button>
-    <a class="btn dark" href="login.html?v=539">Về đăng nhập người dùng</a>
+    <a class="btn dark" href="login.html?v=540">Về trang đăng nhập</a>
   </div>
   <div id="adminStatus">Chưa xác thực Admin Key.</div>
 </div>
@@ -61,7 +62,8 @@ small{color:#9aa8b8}.mono{font-family:Consolas,monospace;word-break:break-all}
 <script>
 const CFG=window.SAE_CONFIG||{};
 const API=(CFG.backend||"https://steal-an-egg-overlay-backend.leducho1900.workers.dev").replace(/\/+$/,"");
-adminKey.value=localStorage.getItem("sae_admin_key")||"";
+const URLP=new URLSearchParams(location.search);
+adminKey.value=URLP.get("adminKey")||localStorage.getItem("sae_admin_key")||"";
 let verified=false,last=null;
 
 function fmtExp(x){return x?new Date(x).toLocaleString():"Vĩnh viễn"}
@@ -72,8 +74,7 @@ function keyStatus(k){
  return '<span class="wait">Chưa kích hoạt</span>';
 }
 function machineCount(k){return k.activated?1:0}
-function makeLogin(k){const u=new URL("login.html",location.href);u.searchParams.set("v","538");u.searchParams.set("key",k);u.searchParams.set("next","control.html?v=539");return u.href}
-async function clip(t){await navigator.clipboard.writeText(t)}
+function makeLogin(k){const u=new URL("login.html",location.href);u.searchParams.set("v","540");u.searchParams.set("key",k);u.searchParams.set("next","control.html?v=540");return u.href}
 async function checkAdmin(){
  const ak=adminKey.value.trim();
  if(!ak){adminStatus.textContent="Nhập Admin Key trước";adminStatus.style.color="#ff6b6b";return false}
@@ -96,23 +97,22 @@ async function checkAdmin(){
   return true;
  }catch(e){
   verified=false;adminArea.classList.add("hidden");
-  adminStatus.textContent="Admin Key sai. Không được vào phần tạo key.";
+  adminStatus.textContent="Admin Key sai. Key thường không mở được phần tạo key.";
   adminStatus.style.color="#ff6b6b";
   return false;
  }
 }
 openAdmin.onclick=checkAdmin;
 
+function cleanKey(k){return String(k||"").trim().toUpperCase()}
 function showLatest(data){
  last=data;
  latest.classList.remove("hidden");
  latest.innerHTML = `
-  <div><b>Key mới:</b> <span class="mono">${data.key}</span></div>
   <div><b>Thời hạn:</b> ${fmtExp(data.expiresAt)}</div>
-  <div><b>Trạng thái:</b> <span class="wait">Chưa kích hoạt</span> · <b>Số máy:</b> 0</div>
+  <div><b>Key:</b> <span class="mono latestKey">${data.key}</span></div>
   <div class="row">
     <button onclick="navigator.clipboard.writeText('${data.key}')">Sao chép key</button>
-    <button onclick="navigator.clipboard.writeText('${makeLogin(data.key)}')">Sao chép link đăng nhập</button>
   </div>`;
 }
 async function createKey(ttl){
@@ -165,8 +165,15 @@ async function deleteKey(k){
  });
  const data=await r.json().catch(()=>({}));
  if(!r.ok||!data.ok){alert("Xóa key lỗi");return}
+ if(last && cleanKey(last.key)===cleanKey(k)){
+   latest.classList.add("hidden");
+   latest.innerHTML="";
+   last=null;
+   status.textContent="Đã xóa key. Output cũ đã ẩn.";
+ }
  await loadKeys();
 }
+if(adminKey.value)checkAdmin();
 </script>
 </body>
 </html>

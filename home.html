@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Steal An Egg Overlay V5.39</title>
+<title>Steal An Egg Overlay V5.40</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#07090d;color:#fff;font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center}
@@ -42,7 +42,7 @@ if(!DEVICE_ID){DEVICE_ID="dev_"+Math.random().toString(36).slice(2)+Date.now().t
 function loginRedirect(){
  const u=new URL("login.html",location.href);
  u.searchParams.set("v","537");
- u.searchParams.set("next","control.html?v=539");
+ u.searchParams.set("next","control.html?v=540");
  location.href=u.href;
 }
 function make(file, params={}){

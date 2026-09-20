@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Đăng nhập Key V5.39</title>
+<title>Đăng nhập Key V5.40</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#07090d;color:#fff;font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center}
@@ -18,11 +18,11 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
 <body>
 <main>
 <h1>🔑 Nhập key để vào web</h1>
-<p class="sub">Mỗi người dùng 1 key. Key sẽ tự khóa vào máy này sau lần đăng nhập đầu tiên.</p>
+<p class="sub">Nhập key thường để vào Control. Nhập key chủ Admin thì sẽ vào phần tạo key.</p>
 <input id="keyInput" placeholder="NHẬP KEY" autocomplete="off">
 <button id="loginBtn" type="button">Đăng nhập</button>
 <div id="status">Sẵn sàng nhập key.</div>
-<small>Nếu nhập đúng sẽ tự vào Control. Nếu sai sẽ báo lỗi ngay.</small>
+<small>Key thường không thấy mục Admin. Chỉ key chủ Admin mới mở phần tạo key.</small>
 </main>
 
 <script>
@@ -33,7 +33,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
   const loginBtn = document.getElementById("loginBtn");
   const statusEl = document.getElementById("status");
   const URLP = new URLSearchParams(location.search);
-  const NEXT = URLP.get("next") || "control.html?v=539";
+  const NEXT = URLP.get("next") || "control.html?v=540";
   const DEVICE_STORE = "sae_device_id_v1";
   let DEVICE_ID = localStorage.getItem(DEVICE_STORE);
 
@@ -42,7 +42,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
     localStorage.setItem(DEVICE_STORE, DEVICE_ID);
   }
 
-  keyInput.value = (URLP.get("key") || localStorage.getItem("sae_user_key") || "").trim();
+  keyInput.value = (URLP.get("key") || localStorage.getItem("sae_user_key") || localStorage.getItem("sae_admin_key") || "").trim();
 
   function setStatus(t,c="#aab7c6"){
     statusEl.textContent = t;
@@ -55,7 +55,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
   }
 
   async function login(){
-    const key = keyInput.value.trim().toUpperCase();
+    const key = keyInput.value.trim();
     if(!key){ setStatus("Nhập key trước", "#ff6b6b"); return; }
 
     loginBtn.disabled = true;
@@ -74,17 +74,25 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
 
       if(!r.ok || !data.ok){
         let msg = "Sai key / key hết hạn / key đã bị xóa / key đã khóa ở máy khác";
-        if(data.error === "not_found") msg = "Worker chưa update code V5.39/V5.38 nên chưa có /auth";
+        if(data.error === "not_found") msg = "Worker chưa update code V5.40 nên chưa có /auth";
         if(data.error === "missing_D1_binding_DB") msg = "Worker thiếu D1 binding DB";
         throw new Error(msg);
       }
 
-      localStorage.setItem("sae_user_key", key);
+      if(data.admin){
+        localStorage.setItem("sae_admin_key", key);
+        setStatus("Key Admin đúng. Đang vào trang tạo key...", "#55ff78");
+        const u = new URL("admin.html?v=540", location.href);
+        setTimeout(()=>{ location.href = u.href; }, 350);
+        return;
+      }
+
+      localStorage.setItem("sae_user_key", key.toUpperCase());
       localStorage.setItem("sae_user_room", data.room);
       setStatus("Key đúng. Đang vào Control...", "#55ff78");
 
       const u = new URL(NEXT, location.href);
-      u.searchParams.set("key", key);
+      u.searchParams.set("key", key.toUpperCase());
       u.searchParams.set("room", data.room);
       setTimeout(()=>{ location.href = u.href; }, 350);
     }catch(e){
@@ -97,10 +105,6 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
 
   loginBtn.addEventListener("click", login);
   keyInput.addEventListener("keydown", e => { if(e.key === "Enter") login(); });
-
-  if(!window.SAE_CONFIG){
-    setStatus("Config chưa tải, đang dùng backend mặc định. Vẫn có thể đăng nhập.", "#ffd75a");
-  }
 })();
 </script>
 </body>
