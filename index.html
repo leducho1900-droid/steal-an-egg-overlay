@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.9 PRICE TEXT FIX</title>
+<title>Steal An Egg Overlay V5.10 NO PRICE BAR</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -67,7 +67,15 @@ body{font-family:Arial,Helvetica,sans-serif}
   animation:none !important;
 }
 .pet-pixels{
-  display:none !important;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  z-index:3;
+  display:block !important;
+  pointer-events:none;
+  user-select:none;
 }
 .pet-aura{
   position:absolute;
@@ -134,28 +142,14 @@ body{font-family:Arial,Helvetica,sans-serif}
 }
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
 .price-cover{
-  position:absolute;
-  left:1.2%;
-  right:1.2%;
-  top:24.9%;
-  height:15.2%;
-  z-index:30;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,.11) 0 10px,
-      rgba(255,255,255,0) 10px 25px
-    ),
-    linear-gradient(180deg,#b7f2ff 0%,#9fe7f7 100%);
-  border-radius:2px;
-  pointer-events:none;
+  display:none !important;
 }
 .price-text{
   position:absolute;
-  left:2.8%;
-  right:2.8%;
-  top:26.0%;
-  height:13.4%;
+  left:3.0%;
+  right:3.0%;
+  top:26.4%;
+  height:12.8%;
   z-index:31;
   display:flex;
   align-items:center;
@@ -164,7 +158,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   color:#35B900;
   font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
   font-weight:1000;
-  font-size:15.6cqw;
+  font-size:15.4cqw;
   line-height:.94;
   letter-spacing:-.035em;
   white-space:nowrap;
