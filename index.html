@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.23 TEXT ONLY PATCH</title>
+<title>Steal An Egg Overlay V5.24 TEXT PATCH LOWER</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -145,13 +145,40 @@ body{font-family:Arial,Helvetica,sans-serif}
   100% { background-position:0% 50%; }
 }
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
-.price-cover{display:none!important;}
+.price-cover{
+  display:none!important;
+}
+
+.price-eraser{
+  position:absolute;
+  left:4.5%;
+  right:4.5%;
+  top:28.0%;
+  height:9.8%;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+  color:#A7ECF7;
+  font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
+  font-weight:1000;
+  font-size:14.0cqw;
+  line-height:.92;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+  -webkit-text-stroke:.72cqw #A7ECF7;
+  paint-order:stroke fill;
+  text-shadow:none!important;
+  pointer-events:none;
+}
+
 .price-text{
   position:absolute;
   left:2.5%;
   right:2.5%;
-  top:25.0%;
-  height:14.0%;
+  top:25.6%;
+  height:13.2%;
   z-index:31;
   display:flex;
   align-items:center;
@@ -160,7 +187,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   color:#35B900;
   font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
   font-weight:1000;
-  font-size:15.9cqw;
+  font-size:15.7cqw;
   line-height:.94;
   letter-spacing:-.035em;
   white-space:nowrap;
@@ -253,7 +280,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/kitsune.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$123B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -266,7 +294,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/luminous_cthulhu.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$82B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -279,7 +308,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/archangel.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$63B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -292,7 +322,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/aetheron.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$87B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -305,7 +336,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/world_burner_cthulhu.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$63B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -318,7 +350,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/shattered_colossus.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$44B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -331,7 +364,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/nightflame.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$37B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -350,7 +384,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/cthulhu.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$37B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -363,7 +398,8 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/mecha_dreadscale.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-eraser">$274B/s</div>
+        <div class="price-text" data-price></div>
       </div>
     
     </div></div></div>
