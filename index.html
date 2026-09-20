@@ -584,7 +584,7 @@ function applyIncoming(obj){
 const API=(CFG.backend||"https://steal-an-egg-overlay-backend.leducho1900.workers.dev").replace(/\/+$/,"");
 const URL_PARAMS=new URLSearchParams(location.search);
 const ROOM=URL_PARAMS.get("room")||CFG.room||"";
-let cloudRev=542;
+let cloudRev=0;
 let waitBusy=false;
 
 async function loadInitialState(){
@@ -648,6 +648,8 @@ window.addEventListener("storage",e=>{if(e.key===SHARED_KEY&&e.newValue){try{app
 if(bc)bc.onmessage=e=>applyIncoming(e.data);
 render();
 loadInitialState().finally(()=>waitForCloudChange());
+/* Dự phòng cho TikTok Studio: nếu long-poll bị giữ/cũ cache vẫn tự kéo state mới. */
+setInterval(loadInitialState,2500);
 setTimeout(()=>{moveOneCard();setInterval(moveOneCard,2450)},900);
 </script>
 </body>

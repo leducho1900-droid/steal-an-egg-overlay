@@ -488,7 +488,7 @@ async function authKeyIfNeeded(){
  if(!USER_KEY){
    const u=new URL("login.html",location.href);
    u.searchParams.set("v","537");
-   u.searchParams.set("next","control.html?v=542");
+   u.searchParams.set("next","control.html?v=543sync");
    location.href=u.href;
    return false;
  }
@@ -517,7 +517,7 @@ async function authKeyIfNeeded(){
    localStorage.removeItem("sae_user_room");
    const u=new URL("login.html",location.href);
    u.searchParams.set("v","537");
-   u.searchParams.set("next","control.html?v=542");
+   u.searchParams.set("next","control.html?v=543sync");
    location.href=u.href;
    return false;
  }
@@ -584,7 +584,7 @@ allOn.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=true;saveA
 allOff.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=false;saveAndPublish()};
 reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[];state.cards[c.id].qty=1;if(c.id==="luminous_eggs")state.cards[c.id].eggMult=100}saveAndPublish()};
 copyLink.onclick=async()=>{
- const uObj=new URL("index.html?v=542",location.href);
+ const uObj=new URL("index.html?v=543sync",location.href);
  if(ROOM)uObj.searchParams.set("room",ROOM);
  const u=uObj.href;
  try{await navigator.clipboard.writeText(u);copyLink.textContent="ĐÃ COPY";setTimeout(()=>copyLink.textContent="Copy Overlay Link",1200)}
