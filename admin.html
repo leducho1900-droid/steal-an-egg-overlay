@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin tạo key V5.36</title>
+<script src="config.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
+main{max-width:1050px;margin:auto;padding:22px}
+h1{margin:0 0 8px;font-size:30px}.sub{color:#aab3c0;line-height:1.45;margin:0 0 18px}
+.card{border:1px solid #2a3039;background:#151922;border-radius:16px;padding:16px;margin:12px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+input,select{background:#090c10;color:#fff;border:1px solid #3b4552;border-radius:10px;padding:11px;font-weight:900}
+input{min-width:280px;flex:1}button,a.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:1000;cursor:pointer;text-decoration:none;display:inline-flex;color:#fff;background:#1a9cff}
+.green{background:#33e35d!important;color:#061008!important}.orange{background:#ffb020!important;color:#1a0d00!important}.red{background:#ff4f4f!important}.dark{background:#222b38!important}
+pre{white-space:pre-wrap;word-break:break-word;background:#070a0f;border:1px solid #263241;border-radius:12px;padding:14px;color:#d8f7ff}
+.resultGrid{display:grid;grid-template-columns:1fr;gap:8px}
+label{color:#c8d3df;font-weight:900}
+small{color:#9aa8b8}
+</style>
+</head>
+<body>
+<main>
+<h1>🔐 Admin tạo key</h1>
+<p class="sub">Tạo key riêng cho từng người. Mỗi key sẽ tự khóa vào 1 máy khi người dùng đăng nhập lần đầu. Mỗi key có 1 room/link overlay riêng.</p>
+
+<div class="card">
+  <label>Admin Key</label>
+  <div class="row">
+    <input id="adminKey" type="password" placeholder="Nhập ADMIN_KEY đã tạo trong Cloudflare Worker">
+    <button id="saveAdmin" class="dark">Lưu Admin Key</button>
+    <a class="btn dark" href="home.html?v=536">Quay lại trang đầu</a>
+  </div>
+  <small>Admin Key là secret bạn đặt trong Cloudflare tên <b>ADMIN_KEY</b> hoặc <b>CONTROL_KEY</b>.</small>
+</div>
+
+<div class="card">
+  <h2>Tạo key mới</h2>
+  <div class="row">
+    <button id="perm" class="green">Tạo key vĩnh viễn</button>
+    <button id="d7" class="orange">Tạo key 7 ngày</button>
+    <button id="h24" class="orange">Tạo key 24 giờ</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Kết quả</h2>
+  <div id="status">Chưa tạo key.</div>
+  <pre id="out"></pre>
+  <div class="row">
+    <button id="copyKey">Copy Key</button>
+    <button id="copyControl">Copy Control Link</button>
+    <button id="copyOverlay">Copy Overlay Link</button>
+    <button id="copyAvatar">Copy Avatar Setup Link</button>
+  </div>
+</div>
+</main>
+
+<script>
+const CFG=window.SAE_CONFIG;
+const API=(CFG.backend||"").replace(/\/+$/,"");
+const adminKey=document.getElementById("adminKey");
+adminKey.value=localStorage.getItem("sae_admin_key")||"";
+let last=null;
+saveAdmin.onclick=()=>{localStorage.setItem("sae_admin_key",adminKey.value.trim());alert("Đã lưu Admin Key trên máy này")};
+
+function makeLink(file, params={}){
+ const u=new URL(file,location.href);
+ for(const [k,v] of Object.entries(params))if(v!=null&&v!=="")u.searchParams.set(k,v);
+ return u.href;
+}
+function show(data){
+ last=data;
+ const exp=data.expiresAt?new Date(data.expiresAt).toLocaleString():"Vĩnh viễn";
+ const control=makeLink("control.html",{v:"536",key:data.key});
+ const overlay=makeLink("index.html",{v:"536",room:data.room});
+ const avatar=makeLink("avatar.html",{v:"536",key:data.key,room:data.room});
+ out.textContent=`KEY: ${data.key}
+ROOM: ${data.room}
+Hạn: ${exp}
+
+CONTROL LINK:
+${control}
+
+OVERLAY LINK:
+${overlay}
+
+AVATAR SETUP LINK:
+${avatar}`;
+ status.textContent="Đã tạo key thành công.";
+}
+async function createKey(ttl){
+ const ak=adminKey.value.trim();
+ if(!ak){alert("Nhập Admin Key trước");return}
+ localStorage.setItem("sae_admin_key",ak);
+ status.textContent="Đang tạo key...";
+ const r=await fetch(`${API}/admin/create-key`,{
+  method:"POST",mode:"cors",cache:"no-store",
+  headers:{"Content-Type":"application/json","Cache-Control":"no-cache"},
+  body:JSON.stringify({adminKey:ak,ttl})
+ });
+ const data=await r.json().catch(()=>({}));
+ if(!r.ok||!data.ok){
+  status.textContent="Lỗi tạo key.";
+  out.textContent=JSON.stringify(data,null,2);
+  return;
+ }
+ show(data);
+}
+perm.onclick=()=>createKey("permanent");
+d7.onclick=()=>createKey("7d");
+h24.onclick=()=>createKey("24h");
+copyKey.onclick=()=>last&&navigator.clipboard.writeText(last.key);
+copyControl.onclick=()=>last&&navigator.clipboard.writeText(makeLink("control.html",{v:"536",key:last.key}));
+copyOverlay.onclick=()=>last&&navigator.clipboard.writeText(makeLink("index.html",{v:"536",room:last.room}));
+copyAvatar.onclick=()=>last&&navigator.clipboard.writeText(makeLink("avatar.html",{v:"536",key:last.key,room:last.room}));
+</script>
+</body>
+</html>

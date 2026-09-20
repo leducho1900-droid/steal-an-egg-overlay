@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Avatar Overlay V5.36</title>
+<script src="config.js"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
+body{font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center}
+.wrap{display:flex;align-items:center;justify-content:center;gap:3.8vw;width:100vw;height:100vh;padding:3vh 4vw}
+.avatarBox{width:min(36vw,430px);aspect-ratio:1;border-radius:50%;border:min(.65vw,8px) solid #f5f5f5;box-shadow:0 0 0 3px #111,0 0 22px rgba(255,255,255,.55) inset;position:relative;background:#000;overflow:hidden;flex:0 0 auto}
+.avatarBox img{width:100%;height:100%;object-fit:cover;display:none}
+.plus{position:absolute;right:10%;bottom:-1%;width:25%;height:25%;border-radius:50%;background:#f41111;border:min(.55vw,7px) solid #fff;display:grid;place-items:center;font:900 min(8vw,90px)/1 Arial;color:#fff;text-shadow:0 .35vw 0 rgba(0,0,0,.45)}
+.eq{font:1000 min(14vw,160px)/1 "Arial Black";color:#111;-webkit-text-stroke:min(.55vw,7px) #fff;text-shadow:0 .35vw 0 #000;flex:0 0 auto}
+.egg{width:min(34vw,430px);filter:drop-shadow(0 .35vw 0 #000);flex:0 0 auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="avatarBox"><img id="avatarImg"><div class="plus">+</div></div>
+  <div class="eq">=</div>
+  <img class="egg" src="assets/luminous_eggs_item.png" alt="Luminous Eggs">
+</div>
+<script>
+const CFG=window.SAE_CONFIG;
+const API=(CFG.backend||"").replace(/\/+$/,"");
+const ROOM=new URLSearchParams(location.search).get("room")||CFG.room||"";
+async function loadAvatar(){
+ if(!ROOM)return;
+ try{
+  const r=await fetch(`${API}/avatar?room=${encodeURIComponent(ROOM)}&_=${Date.now()}`,{cache:"no-store"});
+  const data=await r.json();
+  if(data&&data.ok&&data.avatar){
+    avatarImg.src=data.avatar;
+    avatarImg.style.display="block";
+  }
+ }catch(_e){}
+}
+loadAvatar();
+setInterval(loadAvatar,5000);
+</script>
+</body>
+</html>

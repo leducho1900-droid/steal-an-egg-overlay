@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Control V5.35</title>
+<title>Steal An Egg Control V5.36</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0b0d11;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -68,7 +68,7 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:poin
 @media(max-width:800px){.grid{grid-template-columns:1fr}.muts{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head><body><main>
-<h1>🥚 Steal An Egg Control V5.35 — FIXED</h1>
+<h1>🥚 Steal An Egg Control V5.36 — FIXED</h1>
 <div class="sub"><span class="syncstatus" id="syncStatus">● Đang kiểm tra D1...</span> 
 Weight nhập <b>1–1000</b>. <b>Weight 1 = đúng tiền gốc</b>; tăng Weight thì tự nhân theo đường cong size.
 Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Đồng bộ qua Cloudflare D1, không dùng Cache API. Weight/Mutation/Bật-Tắt/x2–x10 cập nhật chung một state; x1 không hiện nhãn, Luminous Eggs không có nhãn số lượng.
@@ -78,6 +78,9 @@ Mutation cộng bonus theo hệ số. Weight/Mutation tự tính tiền. Đồng
 <button id="allOff" class="red">Tắt tất cả</button>
 <button id="reset" class="blue">Reset Weight + Mutation</button>
 <button id="copyLink" class="blue">Copy Overlay Link</button>
+<button id="avatarPage" class="blue">Avatar Overlay</button>
+<button id="adminPage" class="blue">Admin Keys</button>
+<button id="homePage" class="blue">Trang đầu</button>
 </div>
 <div class="grid">
 <section class="pet" data-id="kitsune">
@@ -336,7 +339,17 @@ File <b>cards_original.png</b> và pet/card gốc không bị chỉnh sửa. Ove
 <script src="config.js"></script>
 <script>
 const CFG=window.SAE_CONFIG, KEY="sae-control-v5", SHARED_KEY="sae-live-state-v5";
-const API=(CFG.backend||"").replace(/\/+$/,""), ROOM=CFG.room||"";
+const API=(CFG.backend||"").replace(/\/+$/,"");
+const URL_PARAMS=new URLSearchParams(location.search);
+const USER_KEY=(URL_PARAMS.get("key")||localStorage.getItem("sae_user_key")||"").trim();
+if(USER_KEY)localStorage.setItem("sae_user_key",USER_KEY);
+let ROOM=URL_PARAMS.get("room")||CFG.room||"";
+const DEVICE_STORE="sae_device_id_v1";
+let DEVICE_ID=localStorage.getItem(DEVICE_STORE);
+if(!DEVICE_ID){
+  DEVICE_ID="dev_"+Math.random().toString(36).slice(2)+Date.now().toString(36);
+  localStorage.setItem(DEVICE_STORE,DEVICE_ID);
+}
 let bc=null;try{bc=new BroadcastChannel("sae-overlay-v5")}catch(_e){}
 const defaults={version:CFG.version,cards:{}};
 for(const c of CFG.cards)defaults.cards[c.id]={enabled:true,weight:1,mutations:[],qty:1};
@@ -468,6 +481,36 @@ function ensureLuminousBase13State(){
   return true;
 }
 
+
+async function authKeyIfNeeded(){
+ const status=document.getElementById("syncStatus");
+ if(!USER_KEY){
+   if(status){status.textContent="● Chưa nhập key - đang dùng room mặc định";status.style.color="#ffd75a"}
+   return true;
+ }
+ try{
+   const r=await fetch(`${API}/auth?_=${Date.now()}`,{
+     method:"POST",mode:"cors",cache:"no-store",
+     headers:{"Content-Type":"application/json","Cache-Control":"no-cache"},
+     body:JSON.stringify({key:USER_KEY,deviceId:DEVICE_ID})
+   });
+   const data=await r.json();
+   if(!r.ok||!data.ok)throw new Error(data.error||"auth_failed");
+   ROOM=data.room;
+   localStorage.setItem("sae_user_room",ROOM);
+   if(status){
+     const exp=data.expiresAt?new Date(data.expiresAt).toLocaleString():"Vĩnh viễn";
+     status.textContent=`● Key OK - ${exp}`;
+     status.style.color="#55ff78";
+   }
+   return true;
+ }catch(e){
+   if(status){status.textContent="● Key lỗi / hết hạn / đã gắn máy khác";status.style.color="#ff6b6b"}
+   alert("Key lỗi, hết hạn hoặc đã gắn với máy khác.");
+   return false;
+ }
+}
+
 async function loadD1State(){
  const status=document.getElementById("syncStatus");
  if(!API||!ROOM){
@@ -529,10 +572,22 @@ allOn.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=true;saveA
 allOff.onclick=()=>{for(const c of CFG.cards)state.cards[c.id].enabled=false;saveAndPublish()};
 reset.onclick=()=>{for(const c of CFG.cards){state.cards[c.id].weight=1;state.cards[c.id].mutations=[];state.cards[c.id].qty=1;if(c.id==="luminous_eggs")state.cards[c.id].eggMult=100}saveAndPublish()};
 copyLink.onclick=async()=>{
- const u=new URL("index.html?v=535",location.href).href;
+ const uObj=new URL("index.html?v=536",location.href);
+ if(ROOM)uObj.searchParams.set("room",ROOM);
+ const u=uObj.href;
  try{await navigator.clipboard.writeText(u);copyLink.textContent="ĐÃ COPY";setTimeout(()=>copyLink.textContent="Copy Overlay Link",1200)}
  catch(_e){prompt("Copy link Overlay:",u)}
 };
+
+avatarPage.onclick=()=>{
+ const u=new URL("avatar.html?v=536",location.href);
+ if(USER_KEY)u.searchParams.set("key",USER_KEY);
+ if(ROOM)u.searchParams.set("room",ROOM);
+ location.href=u.href;
+};
+adminPage.onclick=()=>{location.href=new URL("admin.html?v=536",location.href).href};
+homePage.onclick=()=>{location.href=new URL("home.html?v=536",location.href).href};
+
 render();
-loadD1State();
+authKeyIfNeeded().then(ok=>{if(ok)loadD1State()});
 </script></body></html>
