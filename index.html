@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.7 AURA ONLY</title>
+<title>Steal An Egg Overlay V5.8 PRICE CLEAN</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -151,22 +151,33 @@ body{font-family:Arial,Helvetica,sans-serif}
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
 .price-cover{
   position:absolute;
-  left:7.5%;right:7.5%;top:27.35%;height:12.55%;
-  z-index:4;
+  left:1.8%;
+  right:1.8%;
+  top:25.1%;
+  height:14.9%;
+  z-index:30;
   background:
-    repeating-linear-gradient(135deg,
-      rgba(255,255,255,.14) 0 9px,
-      rgba(255,255,255,0) 9px 23px),
-    linear-gradient(180deg,#a9eaf7 0%,#9be2f3 100%);
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,.12) 0 10px,
+      rgba(255,255,255,0) 10px 25px
+    ),
+    linear-gradient(180deg,#b7f2ff 0%,#9fe7f7 100%);
   border-radius:2px;
+  pointer-events:none;
 }
 .price-text{
   position:absolute;
-  left:3.8%;right:3.8%;top:27.05%;height:13.25%;
-  z-index:5;
-  display:flex;align-items:center;justify-content:center;
+  left:2.8%;
+  right:2.8%;
+  top:26.0%;
+  height:13.4%;
+  z-index:31;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   overflow:visible;
-  color:#35B900; /* lấy gần đúng màu xanh của chữ tiền gốc */
+  color:#35B900;
   font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
   font-weight:1000;
   font-size:16.2cqw;
@@ -178,6 +189,7 @@ body{font-family:Arial,Helvetica,sans-serif}
   text-shadow:0 .16cqw 0 #000;
   transform-origin:center center;
   -webkit-font-smoothing:antialiased;
+  pointer-events:none;
 }
 
 
