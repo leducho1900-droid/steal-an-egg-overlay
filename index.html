@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.32 LAYOUT 3 PER ROW</title>
+<title>Steal An Egg Overlay V5.33 PRIORITY MECHA EGGS</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -492,6 +492,25 @@ function updateLayout(){
   const visible=CFG.cards.filter(c=>(state.cards[c.id]||defaults.cards[c.id]).enabled!==false);
   grid.classList.add(`count-${visible.length}`);
   document.querySelectorAll(".slot").forEach((el,i)=>el.style.order=i+1);
+
+  /* Khi còn đúng 3 ảnh và có Mecha Dreadscale + Luminous Eggs:
+     ưu tiên 2 ảnh này ở hàng trên; ảnh còn lại nằm dưới giữa. */
+  if(visible.length===3){
+    const ids=new Set(visible.map(c=>c.id));
+    if(ids.has("mecha_dreadscale") && ids.has("luminous_eggs")){
+      const mecha=document.querySelector('[data-card="mecha_dreadscale"]');
+      const eggs=document.querySelector('[data-card="luminous_eggs"]');
+      if(mecha)mecha.style.order=1;
+      if(eggs)eggs.style.order=2;
+      let order=3;
+      for(const c of visible){
+        if(c.id!=="mecha_dreadscale" && c.id!=="luminous_eggs"){
+          const el=document.querySelector(`[data-card="${c.id}"]`);
+          if(el)el.style.order=order++;
+        }
+      }
+    }
+  }
 }
 function render(){
   for(const c of CFG.cards){
