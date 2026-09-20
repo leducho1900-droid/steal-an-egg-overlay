@@ -24,7 +24,7 @@ UPDATE GITHUB:
 6. Dùng link mới ?v=542 để tránh cache.
 
 LINK:
-https://leducho1900-droid.github.io/steal-an-egg-overlay/login.html?v=542
+https://leducho1900-droid.github.io/steal-an-egg-overlay/login.html?v=548autoicon
 
 CONTROL:
-https://leducho1900-droid.github.io/steal-an-egg-overlay/control.html?v=542
+https://leducho1900-droid.github.io/steal-an-egg-overlay/control.html?v=548autoicon

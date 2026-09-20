@@ -14,6 +14,12 @@ button:disabled{opacity:.55;cursor:not-allowed}
 #status{margin-top:12px;color:#aab7c6;font-weight:900;min-height:22px}
 small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
 </style>
+
+<link rel="icon" href="favicon.ico?v=554priceclear" sizes="any">
+<link rel="shortcut icon" href="favicon.ico?v=554priceclear">
+<link rel="apple-touch-icon" href="assets/avatar_icon.png?v=554priceclear">
+<link rel="manifest" href="manifest.webmanifest?v=554priceclear">
+<meta name="theme-color" content="#0b0d11">
 </head>
 <body>
 <main>
@@ -33,7 +39,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
   const loginBtn = document.getElementById("loginBtn");
   const statusEl = document.getElementById("status");
   const URLP = new URLSearchParams(location.search);
-  const NEXT = URLP.get("next") || "control.html?v=542";
+  const NEXT = URLP.get("next") || "control.html?v=554priceclear";
   const DEVICE_STORE = "sae_device_id_v1";
   let DEVICE_ID = localStorage.getItem(DEVICE_STORE);
 
@@ -82,7 +88,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
       if(data.admin){
         localStorage.setItem("sae_admin_key", key);
         setStatus("Key Admin đúng. Đang vào trang tạo key...", "#55ff78");
-        const u = new URL("admin.html?v=542", location.href);
+        const u = new URL("admin.html?v=554priceclear", location.href);
         setTimeout(()=>{ location.href = u.href; }, 350);
         return;
       }

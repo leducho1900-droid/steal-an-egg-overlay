@@ -15,6 +15,12 @@ a,button{display:flex;align-items:center;justify-content:center;text-align:cente
 #status{margin-bottom:14px;font-weight:900;color:#ffd75a}
 @media(max-width:650px){.grid{grid-template-columns:1fr}}
 </style>
+
+<link rel="icon" href="favicon.ico?v=554priceclear" sizes="any">
+<link rel="shortcut icon" href="favicon.ico?v=554priceclear">
+<link rel="apple-touch-icon" href="assets/avatar_icon.png?v=554priceclear">
+<link rel="manifest" href="manifest.webmanifest?v=554priceclear">
+<meta name="theme-color" content="#0b0d11">
 </head>
 <body>
 <main>
@@ -42,7 +48,7 @@ if(!DEVICE_ID){DEVICE_ID="dev_"+Math.random().toString(36).slice(2)+Date.now().t
 function loginRedirect(){
  const u=new URL("login.html",location.href);
  u.searchParams.set("v","537");
- u.searchParams.set("next","control.html?v=542");
+ u.searchParams.set("next","control.html?v=554priceclear");
  location.href=u.href;
 }
 function make(file, params={}){
