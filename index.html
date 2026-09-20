@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.11 AURA SLOW CLEAN</title>
+<title>Steal An Egg Overlay V5.13 CLEAR BLACK CORNERS</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -55,20 +55,16 @@ body{font-family:Arial,Helvetica,sans-serif}
 
 /* V5.7 — PET đứng yên 100%.
    CHỈ hiệu ứng bảy màu thu vào 4 giây rồi bung ra 3 giây. */
-.pet-hole{
-  display:none !important;
-}
+.pet-hole{display:none!important;}
 .pet-fx-group{
   position:absolute;
   inset:0;
   z-index:3;
   pointer-events:none;
-  transform:none !important;
-  animation:none !important;
+  transform:none!important;
+  animation:none!important;
 }
-.pet-pixels{
-  display:none !important;
-}
+.pet-pixels{display:none!important;}
 .pet-aura{
   position:absolute;
   inset:0;
@@ -99,31 +95,31 @@ body{font-family:Arial,Helvetica,sans-serif}
   mask-position:center;
 
   mix-blend-mode:soft-light;
-  opacity:.82;
-  filter:saturate(1.28) contrast(1.03);
+  opacity:.84;
+  filter:saturate(1.35) contrast(1.05);
 
   transform-origin:50% 67%;
-  will-change:transform,background-position;
+  will-change:transform,opacity,background-position;
   animation:
-    auraShrinkReturn 10s ease-in-out infinite,
-    rainbowFlow 5s linear infinite;
+    auraHoldShrinkExpand 9s ease-in-out infinite,
+    rainbowFlow 4s linear infinite;
 }
 
 /* 0→4 giây: aura thu nhỏ dần vào giữa rồi biến mất.
    4→7 giây: aura bung dần ra lại full pet.
    PET hoàn toàn đứng yên. */
-@keyframes auraShrinkReturn{
-  0%{
+@keyframes auraHoldShrinkExpand{
+  0%,24%{
     transform:scale(1);
-    opacity:.82;
+    opacity:.84;      /* full pet, giữ lâu một chút */
   }
-  40%{
+  45%,50%{
     transform:scale(.02);
-    opacity:.82;
+    opacity:0;        /* thu vào rồi mất */
   }
-  100%{
+  94%,100%{
     transform:scale(1);
-    opacity:.82;
+    opacity:.84;      /* bung ra khoảng 4 giây rồi giữ lại */
   }
 }
 @keyframes rainbowFlow{
