@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Steal An Egg Overlay V5.25 PRICE BG PATCH</title>
+<title>Steal An Egg Overlay V5.26 ORIGINAL BG NO PATCH</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:transparent!important;overflow:hidden}
@@ -145,35 +145,13 @@ body{font-family:Arial,Helvetica,sans-serif}
   100% { background-position:0% 50%; }
 }
 /* Chỉ che dòng tiền CŨ trên giao diện. File PNG gốc không bị chỉnh sửa. */
-.price-cover{
-  position:absolute;
-  left:5.8%;
-  right:5.8%;
-  top:25.3%;
-  height:13.0%;
-  z-index:30;
-  pointer-events:none;
-  border-radius:7px;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,.14) 0 12px,
-      rgba(255,255,255,0) 12px 28px
-    ),
-    linear-gradient(180deg,#baf3ff 0%,#a6e8f8 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(125,230,245,.12),
-    0 0 4px rgba(160,235,245,.20);
-}
-
-
-
+.price-cover{display:none!important;}
 .price-text{
   position:absolute;
   left:2.5%;
   right:2.5%;
-  top:25.1%;
-  height:14.0%;
+  top:25.4%;
+  height:13.4%;
   z-index:31;
   display:flex;
   align-items:center;
@@ -182,11 +160,11 @@ body{font-family:Arial,Helvetica,sans-serif}
   color:#35B900;
   font-family:"Arial Black","DejaVu Sans",Arial,sans-serif;
   font-weight:1000;
-  font-size:15.9cqw;
+  font-size:15.6cqw;
   line-height:.94;
   letter-spacing:-.035em;
   white-space:nowrap;
-  -webkit-text-stroke:.44cqw #050505;
+  -webkit-text-stroke:.42cqw #050505;
   paint-order:stroke fill;
   text-shadow:none!important;
   transform-origin:center center;
@@ -275,8 +253,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/kitsune.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -289,8 +266,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/luminous_cthulhu.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -303,8 +279,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/archangel.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -317,8 +292,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/aetheron.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -331,8 +305,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/world_burner_cthulhu.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -345,8 +318,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/shattered_colossus.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -359,8 +331,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/nightflame.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -379,8 +350,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/cthulhu.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div>
@@ -393,8 +363,7 @@ body{font-family:Arial,Helvetica,sans-serif}
           <div class="pet-aura" style="--pet-mask:url('aura_masks/mecha_dreadscale.png')"></div>
         </div>
         <div class="qty-badge" data-qty></div>
-        <div class="price-cover" aria-hidden="true"></div>
-        <div class="price-text" data-price></div>
+        <div class="price-cover" aria-hidden="true"></div><div class="price-text" data-price></div>
       </div>
     
     </div></div></div>
