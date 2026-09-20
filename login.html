@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Đăng nhập Key V5.41</title>
+<title>Đăng nhập Key V5.42</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#07090d;color:#fff;font-family:Arial,Helvetica,sans-serif;display:grid;place-items:center}
@@ -33,7 +33,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
   const loginBtn = document.getElementById("loginBtn");
   const statusEl = document.getElementById("status");
   const URLP = new URLSearchParams(location.search);
-  const NEXT = URLP.get("next") || "control.html?v=541";
+  const NEXT = URLP.get("next") || "control.html?v=542";
   const DEVICE_STORE = "sae_device_id_v1";
   let DEVICE_ID = localStorage.getItem(DEVICE_STORE);
 
@@ -74,7 +74,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
 
       if(!r.ok || !data.ok){
         let msg = "Sai key / key hết hạn / key đã bị xóa / key đã khóa ở máy khác";
-        if(data.error === "not_found") msg = "Worker chưa update code V5.41 nên chưa có /auth";
+        if(data.error === "not_found") msg = "Worker chưa update code V5.42 nên chưa có /auth";
         if(data.error === "missing_D1_binding_DB") msg = "Worker thiếu D1 binding DB";
         throw new Error(msg);
       }
@@ -82,7 +82,7 @@ small{display:block;color:#8897a8;margin-top:14px;line-height:1.45}
       if(data.admin){
         localStorage.setItem("sae_admin_key", key);
         setStatus("Key Admin đúng. Đang vào trang tạo key...", "#55ff78");
-        const u = new URL("admin.html?v=541", location.href);
+        const u = new URL("admin.html?v=542", location.href);
         setTimeout(()=>{ location.href = u.href; }, 350);
         return;
       }

@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Avatar Overlay Setup V5.41</title>
+<title>Avatar Overlay Setup V5.42</title>
 <script src="config.js"></script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07090d;color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -31,7 +31,7 @@ input[type=text]{background:#090c10;color:#fff;border:1px solid #3b4552;border-r
   <div class="row">
     <input id="keyInput" type="text" placeholder="Nhập key nếu link chưa có key">
     <button id="loginBtn" class="green">Đăng nhập key</button>
-    <a id="controlBack" class="btn dark" href="control.html?v=541">Quay lại Control</a>
+    <a id="controlBack" class="btn dark" href="control.html?v=542">Quay lại Control</a>
   </div>
   <div id="status" class="status">Đang chờ key...</div>
 </div>
@@ -65,7 +65,7 @@ keyInput.value=USER_KEY;
 if(!USER_KEY){
  const u=new URL("login.html",location.href);
  u.searchParams.set("v","537");
- u.searchParams.set("next","avatar.html?v=541");
+ u.searchParams.set("next","avatar.html?v=542");
  location.href=u.href;
 }
 let avatarData="";
